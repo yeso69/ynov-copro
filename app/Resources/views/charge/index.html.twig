@@ -1,47 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Charges'|trans %}
+
 {% block body %}
-    <h1>Charges list</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Subject</th>
-                <th>Cost</th>
-                <th>Duedate</th>
-                <th>Status</th>
-                <th>Document</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for charge in charges %}
-            <tr>
-                <td><a href="{{ path('charge_show', { 'id': charge.id }) }}">{{ charge.id }}</a></td>
-                <td>{{ charge.subject }}</td>
-                <td>{{ charge.cost }}</td>
-                <td>{% if charge.dueDate %}{{ charge.dueDate|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if charge.status %}Yes{% else %}No{% endif %}</td>
-                <td>{{ charge.document }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('charge_show', { 'id': charge.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('charge_edit', { 'id': charge.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="panel js-data-table-container">
+            <div class="panel-body">
+                <h2>Charges</h2>
+            </div>
+        </div>
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('charge_new') }}">Create a new charge</a>
-        </li>
-    </ul>
-{% endblock %}
+{% endblock body %}
+
+{% block javascripts %}
+{% endblock javascripts %}
