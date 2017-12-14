@@ -1,4 +1,0 @@
-app_charge:
-    resource: "@AppBundle/Resources/config/routing/charge.php"
-    prefix:   /charge
-
