@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Owners list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for owner in owners %}
+            <tr>
+                <td><a href="{{ path('owner_show', { 'id': owner.id }) }}">{{ owner.id }}</a></td>
+                <td>{{ owner.firstname }}</td>
+                <td>{{ owner.lastname }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('owner_show', { 'id': owner.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('owner_edit', { 'id': owner.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('owner_new') }}">Create a new owner</a>
+        </li>
+    </ul>
+{% endblock %}
