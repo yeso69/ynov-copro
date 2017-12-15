@@ -5,8 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
 /**
  * Message controller.
  *
@@ -76,6 +77,31 @@ class MessageController extends Controller
     }
 
     /**
+     * Archive a message entity.
+     *
+     * @Route("/{id}/archive", name="message_archive")
+     * @Method("GET")
+     */
+    public function archiveAction(Message $message, ObjectManager $manager)
+    {
+        if ($message->getArchived()){
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
+        $deleteForm = $this->createDeleteForm($message);
+        $message->setArchived(true);
+        $manager->merge($message);
+        $manager->flush();
+        $this->addFlash(
+            'notice',
+            'Message archived!'
+        );
+        return $this->render('message/show.html.twig', array(
+            'message' => $message,
+            'delete_form'=>$deleteForm->createView()
+        ));
+    }
+
+    /**
      * Displays a form to edit an existing message entity.
      *
      * @Route("/{id}/edit", name="message_edit")
@@ -83,6 +109,9 @@ class MessageController extends Controller
      */
     public function editAction(Request $request, Message $message)
     {
+        if ($message->getArchived()){
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
         $deleteForm = $this->createDeleteForm($message);
         $editForm = $this->createForm('AppBundle\Form\MessageType', $message);
         $editForm->handleRequest($request);
@@ -108,6 +137,9 @@ class MessageController extends Controller
      */
     public function deleteAction(Request $request, Message $message)
     {
+        if ($message->getArchived()){
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
         $form = $this->createDeleteForm($message);
         $form->handleRequest($request);
 

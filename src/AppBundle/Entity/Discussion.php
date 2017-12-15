@@ -190,4 +190,8 @@ class Discussion
         $this->messages = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return "aa";
+    }
 }

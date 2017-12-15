@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PostRemove;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -45,6 +46,8 @@ class Charge
      * @Assert\File(mimeTypes={ "application/pdf" })
      */
     private $document;
+
+
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Owner", mappedBy="charges")
@@ -250,7 +253,7 @@ class Charge
     }
 
     /**
-     * @ORM\PostRemove()
+     * @PostRemove()
      */
     public function postRemoveDeleteDoc(){
         unlink($this->document);

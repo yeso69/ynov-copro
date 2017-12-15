@@ -2,6 +2,8 @@
 
 namespace AppBundle\DataFixtures;
 
+use AppBundle\Entity\Discussion;
+use AppBundle\Entity\Message;
 use AppBundle\Entity\Owner;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\User;
@@ -43,6 +45,24 @@ class AppBundleFixtures extends Fixture
 
         $manager->persist($user);
 
+        $manager->flush();
+
+        $discus = new Discussion();
+        $discus->setCreator($toto);
+        $discus->setPublic(true);
+        $discus->setSubject('Test');
+
+        $manager->persist($discus);
+        $manager->flush();
+
+        $msg = new Message();
+        $msg->setSubject('test 1');
+        $msg->setAuthor($toto);
+        $msg->setContent('POULOULOU');
+        $msg->setDiscussion($discus);
+        $msg->setArchived(false);
+
+        $manager->persist($msg);
         $manager->flush();
     }
 }
