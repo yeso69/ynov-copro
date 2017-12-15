@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Charges'|trans %}
+
 {% block body %}
     <h1>Charge creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-    {{ }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
+    {% include 'form.html.twig' %}
     <ul>
         <li>
             <a href="{{ path('charge_index') }}">Back to the list</a>

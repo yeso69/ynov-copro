@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PrePersist;
 
 /**
  * Contract
@@ -17,6 +18,7 @@ class Contract
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
+
     private $id;
 
     /**
@@ -57,9 +59,13 @@ class Contract
     }
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=True)
      */
+
     private $creationDate;
+
+
+
     /**
      * Get id
      *
@@ -121,5 +127,10 @@ class Contract
     public function removePayment(\AppBundle\Entity\Payment $payment)
     {
         $this->payment->removeElement($payment);
+    }
+
+    public function __toString()
+    {
+        return $this->provider;
     }
 }

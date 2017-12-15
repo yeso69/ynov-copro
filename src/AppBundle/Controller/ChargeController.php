@@ -6,6 +6,7 @@ use AppBundle\Entity\Charge;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Twig_SimpleFilter;
 
 /**
  * Charge controller.
@@ -52,7 +53,7 @@ class ChargeController extends Controller
         }
 
         return $this->render('charge/new.html.twig', array(
-            'charge' => $charge,
+                'charge' => $charge,
             'form' => $form->createView(),
         ));
     }

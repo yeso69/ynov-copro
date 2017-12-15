@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <div class="panel js-data-table-container">
+        <div class="panel-body">
+            <div class="row-clearfix">
+                <form>
+                    {% for child in form.children|keys %}
+                        <div class="col-sm-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    {% if 'token' not in form_label(attribute(form.children,child)) %}
+
+                                        {% if child == 'document' %}
+
+                                        {% else %}
+                                            {{ form_label(attribute(form.children,child),
+                                            '',
+                                            {'label_attr': {'class': 'form-label'}}) }}
+                                        {% endif %}
+                                        {% if child == 'dueDate' %}
+                                            <input class="form-control date">
+                                        {% elseif child == "status" %}
+                                            <input type="checkbox" id="appbundle_charge_status">
+                                        {% else %}
+                                            {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
