@@ -3,6 +3,7 @@
         <div class="panel-body">
             <div class="row-clearfix">
                 <form method="post" action="{{ action }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     {% for child in form.children|keys %}
                         <div class="col-sm-12">
                             <div class="form-group form-float">
@@ -39,7 +40,6 @@
                             </div>
                         </div>
                     </div>
-                    {{ form_rest(form) }}
                 </form>
             </div>
         </div>
