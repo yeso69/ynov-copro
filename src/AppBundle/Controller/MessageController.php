@@ -66,7 +66,9 @@ class MessageController extends Controller
     public function showAction(Message $message)
     {
         $deleteForm = $this->createDeleteForm($message);
-
+        if ($message->getArchived()){
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
         return $this->render('message/show.html.twig', array(
             'message' => $message,
             'delete_form' => $deleteForm->createView(),

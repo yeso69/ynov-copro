@@ -139,5 +139,25 @@ class Message
         return $this->content;
     }
 
+    /**
+     * @ORM\Column(type="boolean", options={"default":false})
+     */
+    private $archived;
+
+    /**
+     * @return mixed
+     */
+    public function getArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param mixed $archived
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+    }
 
 }

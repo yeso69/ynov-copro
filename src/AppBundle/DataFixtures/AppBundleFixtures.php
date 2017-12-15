@@ -33,6 +33,16 @@ class AppBundleFixtures extends Fixture
         $user->setEnabled(true);
 
         $manager->persist($user);
+
+        $user = new User();
+        $user->setUsername("user");
+        $user->setPlainPassword("user");
+        $user->setEmail("ok2@ok.fr");
+        $user->setRoles(['ROLE_USER']);
+        $user->setEnabled(true);
+
+        $manager->persist($user);
+
         $manager->flush();
     }
 }

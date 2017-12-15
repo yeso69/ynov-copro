@@ -13,7 +13,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
