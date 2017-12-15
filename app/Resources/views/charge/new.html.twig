@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Charge creation</h1>
-    {% include 'form.html.twig' %}
+    {% include 'form.html.twig' with {'action': path('charge_new')} %}
     <ul>
         <li>
             <a href="{{ path('charge_index') }}">Back to the list</a>

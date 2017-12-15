@@ -2,7 +2,8 @@
     <div class="panel js-data-table-container">
         <div class="panel-body">
             <div class="row-clearfix">
-                <form>
+                <form method="post" action="{{ action }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     {% for child in form.children|keys %}
                         <div class="col-sm-12">
                             <div class="form-group form-float">
@@ -11,15 +12,19 @@
 
                                         {% if child == 'document' %}
 
+                                        {% elseif child == 'status' %}
+
                                         {% else %}
                                             {{ form_label(attribute(form.children,child),
                                             '',
                                             {'label_attr': {'class': 'form-label'}}) }}
                                         {% endif %}
+
                                         {% if child == 'dueDate' %}
-                                            <input class="form-control date">
+                                            <input class="form-control date" name="appbundle_charge[dueDate]">
                                         {% elseif child == "status" %}
-                                            <input type="checkbox" id="appbundle_charge_status">
+                                            <input type="checkbox" id="appbundle_charge_status" name="status" value="1">
+                                            <label for="appbundle_charge_status">Payed</label>
                                         {% else %}
                                             {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
                                         {% endif %}
@@ -28,6 +33,13 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <div class="col-sm-12">
+                        <div class="form-group form-float">
+                            <div class="">
+                                <input type="submit" value="Submit" class="form-control">
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
