@@ -2,33 +2,26 @@
     <div class="panel js-data-table-container">
         <div class="panel-body">
             <div class="row-clearfix">
-                <form method="post" action="{{ action }}">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                {{  form_start(form) }}
                     {% for child in form.children|keys %}
                         <div class="col-sm-12">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    {% if 'token' not in form_label(attribute(form.children,child)) %}
-
-                                        {% if child == 'document' %}
-
-                                        {% elseif child == 'status' %}
+                                        {% if child == 'document' or child == 'status' or child =='_token' %}
 
                                         {% else %}
                                             {{ form_label(attribute(form.children,child),
                                             '',
                                             {'label_attr': {'class': 'form-label'}}) }}
                                         {% endif %}
-
-                                        {% if child == 'dueDate' %}
-                                            <input class="form-control date" name="appbundle_charge[dueDate]">
-                                        {% elseif child == "status" %}
-                                            <input type="checkbox" id="appbundle_charge_status" name="status" value="1">
-                                            <label for="appbundle_charge_status">Payed</label>
+                                        {% if child == "status" %}
+                                            {{ form_label(form.status, 'Payed')}}
+                                            {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
+                                        {% elseif child == "provider" %}
                                         {% else %}
                                             {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
                                         {% endif %}
-                                    {% endif %}
+
                                 </div>
                             </div>
                         </div>
@@ -40,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                {{  form_end(form) }}
             </div>
         </div>
     </div>

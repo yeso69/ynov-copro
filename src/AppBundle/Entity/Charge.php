@@ -226,6 +226,7 @@ class Charge
     public function __construct()
     {
         $this->concernedOwners = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->status = true;
     }
 
     /**
