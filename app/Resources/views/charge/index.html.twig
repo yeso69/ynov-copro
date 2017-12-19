@@ -4,13 +4,60 @@
 
 {% block body %}
 
-    <div class="container-fluid">
-        <div class="panel js-data-table-container">
-            <div class="panel-body">
-                <h2>Charges</h2>
+    <!-- Hover Rows -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header bg-light-blue">
+                    <a class="btn btn-success waves-effect pull-right" href="{{ path('charge_new') }}">
+                        <i class="material-icons">add_circle</i>
+                        <span>Nouveau</span>
+                    </a>
+                    <h2>{{ title|upper }}</h2>
+                </div>
+                <div class="body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Sujet</th>
+                            <th>Coût</th>
+                            <th>Echéance</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for charge in charges %}
+                        <tr>
+                            <th>{{ charge.subject }}</th>
+                            <td>{{ charge.cost }}</td>
+                            <td>{{ charge.dueDate|date('d/m/Y') }}</td>
+                            {% if charge.status == true %}
+                                <td>Payé</td>
+                            {% else %}
+                                <td>Payé</td>
+                            {% endif %}
+                            <td>
+                                <a href="{{ url('charge_show', {id: charge.id }) }}">
+                                    <i class="material-icons">visibility</i>
+                                </a>
+                                <a href="{{ url('charge_edit', {id: charge.id }) }}">
+                                    <i class="material-icons">mode_edit</i>
+                                </a>
+                                <a href="{{ url('charge_delete', {id: charge.id }) }}">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+    <!-- #END# Hover Rows -->
 
 {% endblock body %}
 

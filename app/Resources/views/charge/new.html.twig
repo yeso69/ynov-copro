@@ -3,11 +3,17 @@
 {% set title = 'Charges'|trans %}
 
 {% block body %}
-    <h1>Charge creation</h1>
-    {% include 'form.html.twig' with {'action': path('charge_new'), 'csrf_token': csrf_token('authenticate')} %}
-    <ul>
-        <li>
-            <a href="{{ path('charge_index') }}">Back to the list</a>
-        </li>
-    </ul>
-{% endblock %}
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>Nouvelle charge</h2>
+        </div>
+
+        <div class="body">
+            {% include 'form.html.twig' with {'action': path('charge_new'), 'csrf_token': csrf_token('authenticate')} %}
+        </div>
+    </div>
+
+{% endblock body %}
+
+{% block javascripts %}
+{% endblock javascripts %}

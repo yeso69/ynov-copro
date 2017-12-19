@@ -4,13 +4,60 @@
 
 {% block body %}
 
-    <div class="container-fluid">
-        <div class="panel js-data-table-container">
-            <div class="panel-body">
-                <h2>Messages</h2>
+    <!-- Hover Rows -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header bg-light-blue">
+                    <a class="btn btn-success waves-effect pull-right" href="{{ path('message_new') }}">
+                        <i class="material-icons">add_circle</i>
+                        <span>Nouveau</span>
+                    </a>
+                    <h2>{{ title|upper }}</h2>
+                </div>
+                <div class="body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Sujet</th>
+                            <th>Auteur</th>
+                            <th>Contenu</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for message in messages %}
+                            <tr>
+                                <th>{{ message.subject }}</th>
+                                <td>{{ message.author }}</td>
+                                <td>{{ message.content }}</td>
+                                {% if message.archived == true %}
+                                    <td>Archivé</td>
+                                {% else %}
+                                    <td>Actif</td>
+                                {% endif %}
+                                <td>
+                                    <a href="{{ url('message_show', {id: message.id }) }}">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a href="{{ url('message_edit', {id: message.id }) }}">
+                                        <i class="material-icons">mode_edit</i>
+                                    </a>
+                                    <a href="{{ url('message_delete', {id: message.id }) }}">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+    <!-- #END# Hover Rows -->
 
 {% endblock body %}
 

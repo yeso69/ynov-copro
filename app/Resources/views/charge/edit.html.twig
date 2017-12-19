@@ -1,21 +1,22 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Charges'|trans %}
+
 {% block body %}
-    <h1>Charge edit</h1>
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>Editer {{ charge.subject }}</h2>
+        </div>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+        <div class="body">
+            {{ form_start(edit_form) }}
+            {{ form_widget(edit_form) }}
+            <input type="submit" value="Edit" />
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('charge_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-{% endblock %}
+{% endblock body %}
+
+{% block javascripts %}
+{% endblock javascripts %}

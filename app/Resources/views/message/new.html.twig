@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% set title = 'Messages'|trans %}
+
 {% block body %}
-    <h1>Message creation</h1>
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>Nouveau message</h2>
+        </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+        <div class="body">
+            {% include 'form.html.twig' with {'action': path('message_new'), 'csrf_token': csrf_token('authenticate')} %}
+        </div>
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('message_index') }}">Back to the list</a>
-        </li>
-    </ul>
-{% endblock %}
+{% endblock body %}
+
+{% block javascripts %}
+{% endblock javascripts %}

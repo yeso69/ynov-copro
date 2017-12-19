@@ -1,40 +1,30 @@
-<div class="container-fluid">
-    <div class="panel js-data-table-container">
-        <div class="panel-body">
-            <div class="row-clearfix">
-                {{  form_start(form) }}
-                    {% for child in form.children|keys %}
-                        <div class="col-sm-12">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                        {% if child == 'document' or child == 'status' or child =='_token' %}
 
-                                        {% else %}
-                                            {{ form_label(attribute(form.children,child),
-                                            '',
-                                            {'label_attr': {'class': 'form-label'}}) }}
-                                        {% endif %}
-                                        {% if child == "status" %}
-                                            {{ form_label(form.status, 'Payed')}}
-                                            {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
-                                        {% elseif child == "provider" %}
-                                        {% else %}
-                                            {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
-                                        {% endif %}
+{{  form_start(form) }}
+    {% for child in form.children|keys %}
+            <div class="form-group">
+                <div class="form-line">
+                        {% if child == 'document' or child == 'status' or child =='_token' %}
 
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    <div class="col-sm-12">
-                        <div class="form-group form-float">
-                            <div class="">
-                                <input type="submit" value="Submit" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                {{  form_end(form) }}
+                        {% else %}
+                            {{ form_label(attribute(form.children,child),
+                            '',
+                            {'label_attr': {'class': 'form-label'}}) }}
+                        {% endif %}
+                        {% if child == "status" %}
+                            {{ form_label(form.status, 'Payed')}}
+                            {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
+                        {% elseif child == "provider" %}
+                        {% else %}
+                            {{ form_widget(attribute(form.children, child),{'attr': {'class':'form-control'}}) }}
+                        {% endif %}
+
+                </div>
             </div>
+    {% endfor %}
+        <div class="form-group">
+            <button type="submit" value="Submit" class="btn bg-cyan btn-block btn-lg waves-effect">
+                <i class="material-icons">check</i>
+                <span>VALIDER</span>
+            </button>
         </div>
-    </div>
-</div>
+{{  form_end(form) }}
