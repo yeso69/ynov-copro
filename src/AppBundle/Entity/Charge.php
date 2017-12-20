@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PostRemove;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -257,6 +258,11 @@ class Charge
      * @PostRemove()
      */
     public function postRemoveDeleteDoc(){
-        unlink($this->document);
+        try{
+            unlink($this->document);
+        }catch (ContextErrorException $e){
+
+        }
+
     }
 }

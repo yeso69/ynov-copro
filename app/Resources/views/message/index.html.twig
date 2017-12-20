@@ -28,14 +28,16 @@
                         </thead>
                         <tbody>
                         {% for message in messages %}
+
+                            {% if app.user.hasRole('ROLE_ADMIN') %}
                             <tr>
                                 <th>{{ message.subject }}</th>
-                                <td>{{ message.author }}</td>
+                                <td>{% for auth in message.author %}{{ auth }} {% endfor %}</td>
                                 <td>{{ message.content }}</td>
                                 {% if message.archived == true %}
-                                    <td>Archivé</td>
+                                    <td>Archived</td>
                                 {% else %}
-                                    <td>Actif</td>
+                                    <td>Live</td>
                                 {% endif %}
                                 <td>
                                     <a href="{{ url('message_show', {id: message.id }) }}">
@@ -50,6 +52,7 @@
                                 </td>
 
                             </tr>
+                                {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>

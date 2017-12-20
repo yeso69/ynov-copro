@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 /**
  * Message controller.
  *
@@ -15,6 +17,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class MessageController extends Controller
 {
+
     /**
      * Lists all message entities.
      *
@@ -37,13 +40,13 @@ class MessageController extends Controller
      *
      * @Route("/new", name="message_new")
      * @Method({"GET", "POST"})
+     *
      */
     public function newAction(Request $request)
     {
         $message = new Message();
         $form = $this->createForm('AppBundle\Form\MessageType', $message);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($message);

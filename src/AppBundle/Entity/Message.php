@@ -30,7 +30,7 @@ class Message
     private $content;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Owner")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Owner", mappedBy="messages")
      */
     private $author;
 
@@ -140,7 +140,7 @@ class Message
     }
 
     /**
-     * @ORM\Column(type="boolean", options={"default":false})
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $archived;
 

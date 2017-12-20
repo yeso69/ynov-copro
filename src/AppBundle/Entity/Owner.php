@@ -34,6 +34,28 @@ class Owner
      *
      */
     private $discussions;
+
+    /**
+     * @return mixed
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param mixed $messages
+     */
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Message", inversedBy="author")
+     */
+    private $messages;
+
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Notification", inversedBy="recipients")
      */

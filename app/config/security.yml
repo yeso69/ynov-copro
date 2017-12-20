@@ -17,7 +17,7 @@ security:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
                 always_use_default_target_path : true
-                default_target_path: /reader/summary
+                default_target_path: /
                 use_referer : true
             logout:       true
             anonymous:    true
@@ -26,5 +26,10 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/charge, role: ROLE_ADMIN }
-        - { path: ^/message, role: ROLE_ADMIN }
+        - { path: ^/charge/new, role: ROLE_ADMIN }
+        - { path: ^/charge/edit, role: ROLE_ADMIN }
+        - { path: ^/charge/delete, role: ROLE_ADMIN }
+        - { path: ^/message/new, role: ROLE_ADMIN }
+        - { path: ^/message/edit, role: ROLE_ADMIN }
+        - { path: ^/message/delete, role: ROLE_ADMIN }
+

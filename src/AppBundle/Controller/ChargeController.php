@@ -27,7 +27,7 @@ class ChargeController extends Controller
 
         $charges = $em->getRepository('AppBundle:Charge')->findAll();
 
-        dump($charges);
+        //dump($charges);
 
         return $this->render('charge/index.html.twig', array(
             'charges' => $charges,
@@ -103,21 +103,38 @@ class ChargeController extends Controller
 
     /**
      * Deletes a charge entity.
-     *
-     * @Route("/{id}", name="charge_delete")
-     * @Method("DELETE")
+     * @Method("GET")
+     * @Route("/{id}/delete", name="charge_delete")
+
      */
     public function deleteAction(Request $request, Charge $charge)
     {
+        /*
         $form = $this->createDeleteForm($charge);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            $this->addFlash(
+                'notice',
+                'sub'
+            );
+        }
+        if($form->isValid()){
+            $this->addFlash('notice', 'valid');
+        }
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($charge);
             $em->flush();
-        }
 
+        }
+        if($form->getErrors()){
+            $this->addFlash('notice', $form->getErrors());
+        }*/
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($charge);
+        $em->flush();
         return $this->redirectToRoute('charge_index');
     }
 
@@ -132,7 +149,7 @@ class ChargeController extends Controller
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('charge_delete', array('id' => $charge->getId())))
-            ->setMethod('DELETE')
+            ->setMethod('GET')
             ->getForm()
         ;
     }
