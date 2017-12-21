@@ -5,16 +5,46 @@
 {% block body %}
     <div class="card">
         <div class="header bg-pink">
-            <h2>Editer {{ message.subject }}</h2>
+            <h2>Edit {{ message.subject }}</h2>
         </div>
 
         <div class="body">
             {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
-            <input type="submit" value="Edit" />
-            {{ form_end(edit_form) }}            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('message_archive', {'id':message.id}) }}"><i class="material-icons">archive</i>Archive</a>
-            {% endif %}
+            {{ form_errors(edit_form) }}
+            {{ form_label(edit_form.subject) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.subject, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                </div>
+            </div>
+
+            {{ form_label(edit_form.content) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.content, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                </div>
+            </div>
+            {{ form_widget(edit_form.discussion) }}
+            {{ form_widget(edit_form.author) }}
+
+
+{#                {% if app.user.hasRole('ROLE_ADMIN') %}
+
+            {{ form_label(edit_form.archived) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.archived, {'attr': {'class': 'form-control', 'type': 'checkbox'}}) }}
+                </div>
+            </div>
+            {% endif %}#}
+
+            <div class="form-group">
+                <button type="submit" value="Submit" class="btn bg-cyan btn-block btn-lg waves-effect">
+                    <i class="material-icons">check</i>
+                    <span>SUBMIT</span>
+                </button>
+            </div>
+            {{ form_end(edit_form) }}
         </div>
     </div>
 

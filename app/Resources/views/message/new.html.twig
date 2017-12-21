@@ -5,11 +5,46 @@
 {% block body %}
     <div class="card">
         <div class="header bg-pink">
-            <h2>Nouveau message</h2>
+            <h2>New message</h2>
         </div>
 
         <div class="body">
-            {% include 'form.html.twig' with {'action': path('message_new'), 'csrf_token': csrf_token('authenticate')} %}
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_label(form.subject) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(form.subject, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                </div>
+            </div>
+
+            {{ form_label(form.content) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(form.content, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                </div>
+            </div>
+            {{ form_widget(form.discussion) }}
+            {{ form_widget(form.author) }}
+
+
+            {#                {% if app.user.hasRole('ROLE_ADMIN') %}
+
+                        {{ form_label(form.archived) }}
+                        <div class="form-group">
+                            <div class="form-line">
+                                {{ form_widget(form.archived, {'attr': {'class': 'form-control', 'type': 'checkbox'}}) }}
+                            </div>
+                        </div>
+                        {% endif %}#}
+
+            <div class="form-group">
+                <button type="submit" value="Submit" class="btn bg-cyan btn-block btn-lg waves-effect">
+                    <i class="material-icons">check</i>
+                    <span>SUBMIT</span>
+                </button>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
 

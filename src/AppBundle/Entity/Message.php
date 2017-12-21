@@ -40,6 +40,11 @@ class Message
     private $discussion;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $archived;
+
+    /**
      * Message constructor.
      * @param $discussion
      */
@@ -138,11 +143,6 @@ class Message
     {
         return $this->content;
     }
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $archived;
 
     /**
      * @return mixed

@@ -135,12 +135,13 @@ class MessageController extends Controller
     /**
      * Deletes a message entity.
      *
-     * @Route("/{id}", name="message_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="message_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Message $message)
     {
-        if ($message->getArchived()){
+/*  LEGACY
+    if ($message->getArchived()){
             $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         }
         $form = $this->createDeleteForm($message);
@@ -150,7 +151,11 @@ class MessageController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($message);
             $em->flush();
-        }
+        }*/
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($message);
+        $em->flush();
 
         return $this->redirectToRoute('message_index');
     }

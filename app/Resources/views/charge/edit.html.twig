@@ -5,13 +5,55 @@
 {% block body %}
     <div class="card">
         <div class="header bg-pink">
-            <h2>Editer {{ charge.subject }}</h2>
+            <h2>Edit {{ charge.subject }}</h2>
         </div>
 
         <div class="body">
             {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
-            <input type="submit" value="Edit" />
+            {{ form_label(edit_form.subject) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.subject, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            {{ form_label(edit_form.cost) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.cost, {'attr': {'class': 'form-control', 'type': 'number'}}) }}
+                </div>
+            </div>
+
+
+            {{ form_label(edit_form.status) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.status, {'attr': {'class': 'form-control', 'type': 'number'}}) }}
+                </div>
+            </div>
+
+            {{ form_label(edit_form.contract) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.contract, {'attr': {'class': '', 'type': 'number'}}) }}
+                </div>
+            </div>
+
+            {{ form_row(edit_form.document) }}
+
+            {{ form_label(edit_form.dueDate) }}
+            <div class="form-group">
+                <div class="form-line">
+                    {{ form_widget(edit_form.dueDate, {'attr': {'class': 'form-control date', 'type': 'text'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" value="Submit" class="btn bg-cyan btn-block btn-lg waves-effect">
+                    <i class="material-icons">check</i>
+                    <span>SUBMIT</span>
+                </button>
+            </div>
             {{ form_end(edit_form) }}
         </div>
     </div>
