@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Charge;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 use Twig_SimpleFilter;
 
 /**
@@ -47,6 +49,21 @@ class ChargeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $charge->getDocument();
+            // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            $file->move(
+                $this->getParameter('uploads_directory'),
+                $fileName
+            );
+
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $charge->setDocument($fileName);
+
+            // ... persist the $product variable or any other work
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($charge);
             $em->flush();
@@ -84,6 +101,9 @@ class ChargeController extends Controller
      */
     public function editAction(Request $request, Charge $charge)
     {
+        $charge->setDocument(
+            new File($this->getParameter('uploads_directory').'/'.$charge->getDocument())
+        );
         $deleteForm = $this->createDeleteForm($charge);
         $editForm = $this->createForm('AppBundle\Form\ChargeType', $charge);
         $editForm->handleRequest($request);

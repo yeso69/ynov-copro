@@ -43,20 +43,19 @@ class Charge
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=500)
+     * @ORM\Column(type="string", length=500, nullable=true)
      * @Assert\File(mimeTypes={ "application/pdf" })
      */
     private $document;
 
-
-
     /**
+     * @ORM\JoinColumn(name="id_owners", referencedColumnName="id", nullable=true)
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Owner", mappedBy="charges")
      */
     private $concernedOwners;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Contract")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contract")
      */
     private $contract;
 
@@ -71,7 +70,7 @@ class Charge
     /**
      * @param mixed $concernedOwners
      */
-    public function setConcernedOwners($concernedOwners)
+    public function setConcernedOwners($concernedOwners  = null)
     {
         $this->concernedOwners = $concernedOwners;
     }
