@@ -7,7 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    uploads_directory: '%kernel.project_dir%/uploads/'
+    uploads_directory: '%kernel.project_dir%/web/uploads'
 
 fos_user:
     db_driver: orm
