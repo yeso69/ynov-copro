@@ -11,6 +11,11 @@
         <div class="body">
             <div class="row clearfix">
                 {{ form_start(edit_form) }}
+                {%  if form_errors(edit_form) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(edit_form) }}
+                </div>
+                {% endif %}
                 <div class="form-group">
                     <div class="form-line">
                         {{ form_widget(edit_form.amount, { 'attr': {'class': 'form-control', 'placeholder':'Amount'}}) }}

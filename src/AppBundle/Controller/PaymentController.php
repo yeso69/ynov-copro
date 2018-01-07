@@ -6,6 +6,7 @@ use AppBundle\Entity\Payment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -45,14 +46,19 @@ class PaymentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
             $file = $payment->getDocuments();
-            $fileName = $request->files->get('appbundle_payment')['documents']->getClientOriginalName();
-            $file->move(
-                $this->getParameter('documents_directory'),
-                $fileName
-            );
-            $payment->setDocuments($fileName);
+            if ($fileName = $request->files->get('appbundle_payment')['documents']) {
+                $fileName = $request->files->get('appbundle_payment')['documents']->getClientOriginalName();
+                $file->move(
+                    $this->getParameter('documents_directory'),
+                    $fileName
+                );
+                $payment->setDocuments($fileName);
+            }
+
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($payment);
             $em->flush();
