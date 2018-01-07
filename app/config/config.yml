@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: en
     uploads_directory: '%kernel.project_dir%/web/uploads'
+    documents_directory: '%kernel.project_dir%/web/uploads/documents'
 
 fos_user:
     db_driver: orm

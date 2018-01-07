@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Payment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Payment controller.
@@ -44,6 +45,13 @@ class PaymentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
+            $file = $payment->getDocuments();
+            $fileName = $request->files->get('appbundle_payment')['documents']->getClientOriginalName();
+            $file->move(
+                $this->getParameter('documents_directory')
+            );
+            $payment->setDocuments($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->persist($payment);
             $em->flush();
@@ -130,7 +138,6 @@ class PaymentController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('payment_delete', array('id' => $payment->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

@@ -1,12 +1,64 @@
 {% extends 'base.html.twig' %}
 {% set title = 'Payment'|trans %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
+{% endblock %}
 {% block body %}
-    <h1>Payment edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>New payment</h2>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                {{ form_start(edit_form) }}
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_widget(edit_form.amount, { 'attr': {'class': 'form-control', 'placeholder':'Amount'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_widget(edit_form.charge, { 'attr': {'class': 'form-control show-tick', 'title':'Charge'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_widget(edit_form.contract, { 'attr': {'class': 'form-control show-tick', 'title':'Contract'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(edit_form.date) }}
+                        {{ form_widget(edit_form.date, { 'attr': {'class': 'form-control datepicker'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ edit_form.documents.vars.data }}
+                        {{ form_label(edit_form.documents) }}
+                        {{ form_widget(edit_form.documents, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_widget(edit_form.owner, { 'attr': {'class': 'form-control', 'title':'Owner'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_widget(edit_form.type, { 'attr': {'class': 'form-control', 'title':'Payment type'}}) }}
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <div class="form-line">
+                        <button class="btn btn-info btn-lg">Submit</button>
+                        <!--input type="submit" value="Create" class="form-control"/-->
+                    </div>
+                </div>
+                {{ form_end(edit_form) }}
+            </div>
+        </div>
+    </div>
 
     <ul>
         <li>
