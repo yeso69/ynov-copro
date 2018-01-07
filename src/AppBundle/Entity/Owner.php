@@ -34,6 +34,26 @@ class Owner
      *
      */
     private $discussions;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="owner")
+     */
+    private $payment;
+
+    /**
+     * @return mixed
+     */
+    public function getPayment()
+    {
+        return $this->payment;
+    }
+
+    /**
+     * @param mixed $payment
+     */
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
+    }
 
     /**
      * @return mixed

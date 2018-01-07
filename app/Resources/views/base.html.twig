@@ -493,12 +493,10 @@
     </div>
 </section>
 
-{% block javascripts %}
-{% endblock javascripts %}
-
 <!-- Jquery Core Js -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
-
+{% block javascripts %}
+{% endblock %}
 <!-- Bootstrap Core Js -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.js') }}"></script>
 
@@ -519,7 +517,7 @@
 <script src="{{ asset('plugins/morrisjs/morris.js') }}"></script>
 
 <!-- ChartJs -->
-<script src="{{ asset('') }}plugins/chartjs/Chart.bundle.js"></script>
+<script src="{{ asset('plugins/chartjs/Chart.bundle.js') }}"></script>
 
 <!-- Flot Charts Plugin Js -->
 <script src="{{ asset('plugins/flot-charts/jquery.flot.js') }}"></script>
@@ -537,6 +535,7 @@
 
 <!-- Demo Js -->
 <script src="{{ asset('js/demo.js') }}"></script>
+
 </body>
 
 </html>

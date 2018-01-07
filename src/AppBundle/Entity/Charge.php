@@ -16,6 +16,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Charge
 {
     /**
+     * @return mixed
+     */
+    public function getPayment()
+    {
+        return $this->payment;
+    }
+
+    /**
+     * @param mixed $payment
+     */
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
+    }
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -58,6 +73,10 @@ class Charge
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contract")
      */
     private $contract;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="charge")
+     */
+    private $payment;
 
     /**
      * @return mixed
@@ -263,5 +282,9 @@ class Charge
 
         }
 
+    }
+    public function __toString()
+    {
+        return $this->subject;
     }
 }

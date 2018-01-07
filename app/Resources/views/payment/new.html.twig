@@ -1,16 +1,79 @@
 {% extends 'base.html.twig' %}
-
+{% set title = 'Payment'|trans %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
+{% endblock %}
 {% block body %}
-    <h1>Payment creation</h1>
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>New payment</h2>
+        </div>
+        <div class="body">
+            <div class="row clearfix">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.amount) }}
+                        {{ form_widget(form.amount, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.charge) }}
+                        {{ form_widget(form.charge, { 'attr': {'class': 'form-control show-tick'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.contract) }}
+                        {{ form_widget(form.contract, { 'attr': {'class': 'form-control show-tick'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.date) }}
+                        {{ form_widget(form.date, { 'attr': {'class': 'form-control datepicker'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.documents) }}
+                        {{ form_widget(form.documents, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.owner) }}
+                        {{ form_widget(form.owner, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <div class="form-line">
+                        <button class="btn btn-info btn-lg">Submit</button>
+                        <!--input type="submit" value="Create" class="form-control"/-->
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+
+
 
     <ul>
         <li>
             <a href="{{ path('payment_index') }}">Back to the list</a>
         </li>
     </ul>
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/form.js') }}"></script>
 {% endblock %}
