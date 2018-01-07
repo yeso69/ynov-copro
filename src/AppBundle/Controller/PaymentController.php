@@ -49,7 +49,8 @@ class PaymentController extends Controller
             $file = $payment->getDocuments();
             $fileName = $request->files->get('appbundle_payment')['documents']->getClientOriginalName();
             $file->move(
-                $this->getParameter('documents_directory')
+                $this->getParameter('documents_directory'),
+                $fileName
             );
             $payment->setDocuments($fileName);
             $em = $this->getDoctrine()->getManager();
