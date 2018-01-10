@@ -324,11 +324,26 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('payment_index') }}">
-                        <i class="material-icons">credit_card</i>
-                        <span>Payment</span>
+                    <a href="">{#TODO path projects#}
+                        <i class="material-icons">update</i>
+                        <span>Projects</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ path('payment_index') }}">
+                        <i class="material-icons">credit_card</i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li>
+                        <a href="{{ path('user_index') }}">
+                            <i class="material-icons">people</i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                {% endif %}
+
             </ul>
         </div>
         <!-- #Menu -->

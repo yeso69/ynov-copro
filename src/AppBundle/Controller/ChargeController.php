@@ -27,8 +27,6 @@ class ChargeController extends Controller
 
         $charges = $em->getRepository('AppBundle:Charge')->findAll();
 
-        //dump($charges);
-
         return $this->render('charge/index.html.twig', array(
             'charges' => $charges,
         ));
