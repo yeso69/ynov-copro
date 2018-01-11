@@ -284,6 +284,7 @@
                 <img src="{{ asset('images/user.png') }}" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
+                    {% if is_granted('ROLE_ADMIN') %}
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</div>
                 <div class="email">{{ app.user.email }}</div>
                 <div class="btn-group user-helper-dropdown">
@@ -298,6 +299,7 @@
                         <li><a href="javascript:void(0);"><i class="material-icons">input</i>Se déconnecter</a></li>
                     </ul>
                 </div>
+                {% endif %}
             </div>
         </div>
         <!-- #User Info -->

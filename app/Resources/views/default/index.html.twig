@@ -7,10 +7,44 @@
     <div class="container-fluid">
         <div class="panel js-data-table-container">
             <div class="panel-body">
-               <h2>Accueil</h2>
+                <h2>Home</h2>
             </div>
+            {% if charges %}
+                <div class="text-center"><h3><i class="material-icons">euro_symbol</i>Due charges</h3></div>
+                {% for charge in charges %}
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            {{ charge.subject }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ charge.cost }} €
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
+            {% if discussions %}
+                <div class="text-center"><h3><i class="material-icons">message</i>Discussions</h3></div>
+                {% for disc in discussions %}
+                    {{ dump(disc) }}
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            {{ disc.subject }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ disc }}
+                            {{ disc.owner }} €
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            {% endif %}
         </div>
+
     </div>
+
+
+
 
 {% endblock body %}
 

@@ -1,32 +1,48 @@
 {% extends 'base.html.twig' %}
 {% set title = 'Payment'|trans %}
+
 {% block body %}
-    <h1>Payment</h1>
+    <!-- Hover Rows -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header bg-light-blue">
+                    <h2>{{ title|upper }} {{ payment.id }}</h2>
+                </div>
+                <div class="body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Charge</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Documents</th>
+                            <th>Contract</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>{{ payment.charge }}</th>
+                                <td>{{ payment.amount }}</td>
+                                <td>{{ payment.date|date('d-m-Y') }}</td>
+                                <td>{{ payment.type }}</td>
+                                <td>{% if payment.document %}<a href="{{ path('file_show', {'id':payment.id, 'entity':'payment'}) }}">{{ payment.document }}</a>
+                                    {% else %}Pas de document
+                                    {% endif %}
+                                </td>
+                                <td>{{ payment.contract }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% for message in app.flashes('notice') %}
+                        <div class="flash-notice">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ payment.id }}</td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td>{{ payment.amount }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('payment_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('payment_edit', { 'id': payment.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

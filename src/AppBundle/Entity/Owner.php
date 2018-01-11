@@ -19,6 +19,7 @@ class Owner extends BaseUser
      */
     public function getRoles()
     {
+
         $roles = $this->roles;
 
         foreach ($this->getGroups() as $group) {
@@ -29,6 +30,7 @@ class Owner extends BaseUser
         $roles[] = static::ROLE_DEFAULT;
 
         return array_unique($roles);
+
     }
 
     /**
@@ -348,5 +350,13 @@ class Owner extends BaseUser
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PostPersist()
+     */
+    public function createToken(){
+        $this->setConfirmationToken(substr(md5(microtime()),rand(0,26),32));
+        mail($this->getEmail(), 'Copro signup', 'Your account has been successfully registered.');
     }
 }

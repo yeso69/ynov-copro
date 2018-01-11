@@ -22,8 +22,9 @@ class PaymentType extends AbstractType
     {
 
         $builder->add('amount')->add('contract')->add('owner')->add('date')
-            ->add('documents',FileType::class, array('label' => 'Document (PDF file)', 'required'=>False, 'data_class' => null))
-            ->add('type', ChoiceType::class, ['choices'=>['Check'=>'Check', 'Transfer'=>'Transfer']])->add('charge');
+            ->add('document',FileType::class, array('label' => 'Document (PDF file)', 'required'=>False, 'data_class' => null))
+            ->add('type', ChoiceType::class)
+            ->add('charge');
     }
     /**
      * {@inheritdoc}

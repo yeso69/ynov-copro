@@ -46,7 +46,7 @@ class ChargeController extends Controller
         $charge = new Charge();
         $form = $this->createForm('AppBundle\Form\ChargeType', $charge);
         $form->handleRequest($request);
-
+        #TODO: si pas de concernedOwners -> tous
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $charge->getDocument();
@@ -141,29 +141,7 @@ class ChargeController extends Controller
      */
     public function deleteAction(Request $request, Charge $charge)
     {
-        /*
-        $form = $this->createDeleteForm($charge);
 
-        $form->handleRequest($request);
-        if($form->isSubmitted()){
-            $this->addFlash(
-                'notice',
-                'sub'
-            );
-        }
-        if($form->isValid()){
-            $this->addFlash('notice', 'valid');
-        }
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($charge);
-            $em->flush();
-
-        }
-        if($form->getErrors()){
-            $this->addFlash('notice', $form->getErrors());
-        }*/
         $em = $this->getDoctrine()->getManager();
         $em->remove($charge);
         $em->flush();

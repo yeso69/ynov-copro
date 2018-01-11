@@ -34,8 +34,8 @@ class FileController extends Controller
         $em = $this->getDoctrine()->getManager();
         $entity= $em->getRepository("AppBundle:".ucfirst($entity))->find($id);
         if ($entity){
-            #TODO : asset path
-            $response = new BinaryFileResponse("F:\\Users\\Mehdi\\Documents\\Ynov\\Dev web framework\\copro\\ynov-copro\\web\\uploads\\documents\\".$entity->getDocument());
+
+            $response = new BinaryFileResponse(realpath($this->getParameter('documents_directory')).DIRECTORY_SEPARATOR.$entity->getDocument());
             $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
             return $response;

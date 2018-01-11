@@ -104,7 +104,7 @@ class Payment
     private $type;
 
     /**
-     *@ORM\ManyToOne(targetEntity="AppBundle\Entity\Charge", inversedBy="payment")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Charge", inversedBy="payment")
      */
     private $charge;
 
@@ -138,8 +138,9 @@ class Payment
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contract", inversedBy="payment")
      */
     private $contract;
+
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner", inversedBy="payment")
      */
     private $owner;
 
@@ -158,7 +159,6 @@ class Payment
     {
         $this->owner = $owner;
     }
-
 
 
     /**
@@ -193,6 +193,29 @@ class Payment
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    public function __toString()
+    {
+        return $this->owner . " paid " . strval($this->amount) . " €";
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function checkAmount(){
+        $payments = $this->getCharge()->getPayment();
+        $paid = 0 ;
+        foreach ($payments as $payment){
+            $paid += $payment->getAmount();
+        }
+        if( $paid+$this->getAmount() > $this->getCharge()->getCost()
+            or $this->getAmount() >  $this->getCharge()->getCost() / sizeof($this->getCharge()->getConcernerdOwners()) ){
+            throw new \Exception('Payment amount superior to task cost');
+        }
+        else if($paid+$this->getAmount() == $this->getCharge()->getCost()){
+            $this->getCharge()->setStatus(True);
+        }
     }
 }
 
