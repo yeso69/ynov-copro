@@ -4,20 +4,22 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM ;
+use FOS\UserBundle\Model\User as BaseUser;
+
 /**
  * Owner
  * @ORM\Entity
  * @ORM\Table(name="owner")
  * @ORM\HasLifecycleCallbacks
  */
-class Owner
+class Owner extends BaseUser
 {
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -34,6 +36,7 @@ class Owner
      *
      */
     private $discussions;
+
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="owner")
      */
@@ -161,13 +164,14 @@ class Owner
     }
     /**
      * Constructor
-     */
+
     public function __construct()
     {
         #$this->discussions = new ArrayCollection();
         #$this->charges = new ArrayCollection();
         #$this->notifications = new ArrayCollection();
     }
+*/
 
     /**
      * Add discussion
@@ -225,23 +229,68 @@ class Owner
     }
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="owner")
+     * @return string
      */
-    private $user;
-
-    /**
-     * @return mixed
-     */
-    public function getUser()
+    public function getUsername()
     {
-        return $this->user;
+        return $this->username;
     }
 
     /**
-     * @param mixed $user
+     * @param string $username
      */
-    public function setUser($user)
+    public function setUsername($username)
     {
-        $this->user = $user;
+        $this->username = $username;
     }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @param string $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
 }
