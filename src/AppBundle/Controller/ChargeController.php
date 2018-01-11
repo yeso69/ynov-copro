@@ -6,6 +6,9 @@ use AppBundle\Entity\Charge;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -48,19 +51,25 @@ class ChargeController extends Controller
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $charge->getDocument();
 
-            // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            if ($fileName = $request->files->get('appbundle_charge')['document']) {
+                $fileName = $request->files->get('appbundle_charge')['document']->getClientOriginalName();
+                $file->move(
+                    $this->getParameter('documents_directory'),
+                    $fileName
+                );
+                $charge->setDocument($fileName);
+                try{
+                    $file->move(
+                        $this->getParameter('uploads_directory'),
+                        $fileName
+                    );
+                }catch (FileException $e){}
 
-            $file->move(
-                $this->getParameter('uploads_directory'),
-                $fileName
-            );
+                $charge->setDocument($fileName);
+            }
 
-            // Update the 'brochure' property to store the PDF file name
-            // instead of its contents
-            $charge->setDocument($fileName);
 
-            // ... persist the $product variable or any other work
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($charge);
@@ -99,9 +108,14 @@ class ChargeController extends Controller
      */
     public function editAction(Request $request, Charge $charge)
     {
-        $charge->setDocument(
-            new File($this->getParameter('uploads_directory').'/'.$charge->getDocument())
-        );
+        try{
+            $charge->setDocument(
+                new File($this->getParameter('uploads_directory').'/'.$charge->getDocument())
+            );
+        }catch (\Exception $e){
+
+        }
+
         $deleteForm = $this->createDeleteForm($charge);
         $editForm = $this->createForm('AppBundle\Form\ChargeType', $charge);
         $editForm->handleRequest($request);

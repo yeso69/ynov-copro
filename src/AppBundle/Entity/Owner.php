@@ -15,6 +15,30 @@ use FOS\UserBundle\Model\User as BaseUser;
 class Owner extends BaseUser
 {
     /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
+
+        // we need to make sure to have at least one role
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -162,16 +186,16 @@ class Owner extends BaseUser
     {
         return $this->firstname;
     }
-    /**
-     * Constructor
 
+
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
-        #$this->discussions = new ArrayCollection();
-        #$this->charges = new ArrayCollection();
-        #$this->notifications = new ArrayCollection();
+        parent::__construct();
     }
-*/
+
 
     /**
      * Add discussion
@@ -185,6 +209,22 @@ class Owner extends BaseUser
         $this->discussions[] = $discussion;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param string $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
     }
 
     /**
@@ -293,4 +333,20 @@ class Owner extends BaseUser
         $this->email = $email;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === static::ROLE_DEFAULT) {
+            return $this;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
 }

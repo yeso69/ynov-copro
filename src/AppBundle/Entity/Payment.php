@@ -39,17 +39,17 @@ class Payment
     /**
      * @return mixed
      */
-    public function getDocuments()
+    public function getDocument()
     {
-        return $this->documents;
+        return $this->document;
     }
 
     /**
-     * @param mixed $documents
+     * @param mixed $document
      */
-    public function setDocuments($documents)
+    public function setDocument($document)
     {
-        $this->documents = $documents;
+        $this->document = $document;
     }
 
     /**
@@ -96,7 +96,7 @@ class Payment
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $documents;
+    private $document;
 
     /**
      * @ORM\Column(type="string", length=10)
