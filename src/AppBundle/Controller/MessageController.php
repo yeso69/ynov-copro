@@ -71,7 +71,7 @@ class MessageController extends Controller
     {
         $deleteForm = $this->createDeleteForm($message);
         if ($message->getArchived()){
-            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+            $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Unable to access this page!');
         }
         return $this->render('message/show.html.twig', array(
             'message' => $message,
@@ -88,7 +88,7 @@ class MessageController extends Controller
     public function archiveAction(Message $message, ObjectManager $manager)
     {
         if ($message->getArchived()){
-            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+            $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN', null, 'Unable to access this page!');
         }
         $deleteForm = $this->createDeleteForm($message);
         $message->setArchived(true);

@@ -32,7 +32,10 @@
                         </tr>
                         <tr>
                             <th>Document</th>
-                            <td><a href="{{ asset('uploads/' ~ charge.document) }}" target="_blank">View file (PDF)</a></td>
+                            <td>{% if charge.document %}<a href="{{ path('file_show', {'id':charge.id, 'entity':'charge'}) }}">{{ charge.document }}</a>
+                                {% else %}Pas de document
+                                {% endif %}
+                            </td>
                         </tr>
                         </tbody>
                     </table>

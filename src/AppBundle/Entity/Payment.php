@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -90,7 +91,7 @@ class Payment
     private $amount;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $date;
     /**
@@ -206,15 +207,17 @@ class Payment
     public function checkAmount(){
         $payments = $this->getCharge()->getPayment();
         $paid = 0 ;
-        foreach ($payments as $payment){
-            $paid += $payment->getAmount();
-        }
-        if( $paid+$this->getAmount() > $this->getCharge()->getCost()
-            or $this->getAmount() >  $this->getCharge()->getCost() / sizeof($this->getCharge()->getConcernerdOwners()) ){
-            throw new \Exception('Payment amount superior to task cost');
-        }
-        else if($paid+$this->getAmount() == $this->getCharge()->getCost()){
-            $this->getCharge()->setStatus(True);
+        if($payments){
+            foreach ($payments as $payment){
+                $paid += $payment->getAmount();
+            }
+            if( $paid+$this->getAmount() > $this->getCharge()->getCost()
+                or $this->getAmount() >  $this->getCharge()->getCost() / sizeof($this->getCharge()->getConcernerdOwners()) ){
+                throw new \Exception('Payment amount superior to task cost');
+            }
+            else if($paid+$this->getAmount() == $this->getCharge()->getCost()){
+                $this->getCharge()->setStatus(True);
+            }
         }
     }
 }

@@ -17,10 +17,12 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $charges = $em->getRepository("AppBundle:Charge")->findBy(['status'=>True]);
         $discussions = $this->getUser()->getDiscussions();
+        $payments = $em->getRepository('AppBundle:Payment')->findBy(['owner'=>$this->getUser()]);
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
             'charges'=>$charges,
-            'discussions'=>$discussions
+            'discussions'=>$discussions,
+            'payments'=>$payments
         ]);
     }
 }

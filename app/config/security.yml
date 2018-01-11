@@ -28,10 +28,10 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/charge/new, role: ROLE_MANAGER }
         - { path: ^/charge/edit, role: ROLE_MANAGER }
+        - { path: ^/charge/delete, role: ROLE_MANAGER }
         - { path: ^/contract/new, role: ROLE_MANAGER }
         - { path: ^/contract/edit, role: ROLE_MANAGER }
-        - { path: ^/charge/delete, role: ROLE_ADMIN }
-        #- { path: ^/message/*, role: ROLE_ADMIN }
+        - { path: ^/contract/delete, role: ROLE_MANAGER }
         - { path: ^/user/, role: ROLE_ADMIN }
 
 

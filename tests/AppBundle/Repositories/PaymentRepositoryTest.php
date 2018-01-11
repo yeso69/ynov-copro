@@ -28,7 +28,7 @@ class ProductRepositoryTest extends KernelTestCase
     /**
      * @expectedException \Exception
      */
-    public function testConstraints()
+    public function testConstraint()
     {
         $charge = $this->em->getRepository(Charge::class)->find(1);
         $payment = new Payment();
@@ -38,6 +38,28 @@ class ProductRepositoryTest extends KernelTestCase
         $this->em->persist($payment);
         $this->expectException(\Exception::class);
     }
+
+    public function testUpdate()
+    {
+        $charge = new Charge();
+        $charge->setSubject("Test");
+        $charge->setCost(1000);
+        $charge->setStatus(false);
+        $charge->setDueDate(new\DateTime('10-10-2018'));
+
+
+        $this->em->persist($charge);
+        $this->em->flush();
+
+        $payment = new Payment();
+        $payment-> setAmount(1000);
+        $payment->setOwner($this->em->getRepository(Owner::class)->find(1));
+        $payment->setCharge($charge);
+        $this->em->persist($payment);
+
+        $this->assertEquals(true, $charge->getStatus());
+    }
+
 
     /**
      * {@inheritDoc}

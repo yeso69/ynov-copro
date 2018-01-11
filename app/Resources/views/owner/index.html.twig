@@ -1,41 +1,66 @@
 {% extends 'base.html.twig' %}
- {% set title = "" %}
+{% set title = 'Owners'|trans %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
+{% endblock %}
 {% block body %}
     <h1>Owners list</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for owner in owners %}
-            <tr>
-                <td><a href="{{ path('owner_show', { 'id': owner.id }) }}">{{ owner.id }}</a></td>
-                <td>{{ owner.firstname }}</td>
-                <td>{{ owner.lastname }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('owner_show', { 'id': owner.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('owner_edit', { 'id': owner.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <!-- Hover Rows -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header bg-light-blue">
+                    <a class="btn btn-success waves-effect pull-right" href="{{ path('owner_new') }}">
+                        <i class="material-icons">add_circle</i>
+                        <span>New</span>
+                    </a>
+                    <h2>{{ title|upper }}</h2>
+                </div>
+                <div class="body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for owner in owners %}
+                            <tr>
+                                <th>{{ owner.username }}</th>
+                                <td>{{ owner.firstname }}</td>
+                                <td>{{ owner.lastname }}</td>
+                                <td>{{ owner.email }}</td>
+                                <td>{{ owner.roles|join }}</td>
+                                <td>
+                                    <a href="{{ url('owner_show', {id: owner.id }) }}">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a href="{{ url('owner_edit', {id: owner.id }) }}">
+                                        <i class="material-icons">mode_edit</i>
+                                    </a>
+                                    <a href="{{ url('owner_delete', {id: owner.id}) }}">
+                                        <i class="material-icons">delete</i>
+                                    </a>
+                                </td>
 
-    <ul>
-        <li>
-            <a href="{{ path('owner_new') }}">Create a new owner</a>
-        </li>
-    </ul>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% for message in app.flashes('notice') %}
+                        <div class="flash-notice">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

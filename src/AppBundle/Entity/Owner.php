@@ -206,6 +206,7 @@ class Owner extends BaseUser
      *
      * @return Owner
      */
+
     public function addDiscussion(\AppBundle\Entity\Discussion $discussion)
     {
         $this->discussions[] = $discussion;

@@ -126,20 +126,14 @@ class PaymentController extends Controller
     /**
      * Deletes a payment entity.
      *
-     * @Route("/{id}", name="payment_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="payment_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Payment $payment)
     {
-        $form = $this->createDeleteForm($payment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($payment);
-            $em->flush();
-        }
-
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($payment);
+        $em->flush();
         return $this->redirectToRoute('payment_index');
     }
 

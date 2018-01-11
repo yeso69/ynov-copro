@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% set title = 'Messages'|trans %}
-
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
+{% endblock %}
 {% block body %}
 
     <!-- Hover Rows -->
@@ -29,7 +31,7 @@
                         <tbody>
                         {% for message in messages %}
 
-                            {% if app.user.hasRole('ROLE_ADMIN') %}
+
                             <tr>
                                 <th>{{ message.subject }}</th>
                                 <td>{% for auth in message.author %}1{{ auth.firstname }} {% endfor %}</td>
@@ -52,7 +54,7 @@
                                 </td>
 
                             </tr>
-                                {% endif %}
+
                         {% endfor %}
                         </tbody>
                     </table>
