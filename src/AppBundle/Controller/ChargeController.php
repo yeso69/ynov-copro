@@ -46,11 +46,14 @@ class ChargeController extends Controller
         $charge = new Charge();
         $form = $this->createForm('AppBundle\Form\ChargeType', $charge);
         $form->handleRequest($request);
-        #TODO: si pas de concernedOwners -> tous
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $charge->getDocument();
-
+            if(count($form->getNormData()->getConcernedOwners())== 0){
+                $charge->setConcernedOwners(
+                    $this->getDoctrine()->getManager()->getRepository('AppBundle:Owner')->findAll()
+                );
+            }
             if ($fileName = $request->files->get('appbundle_charge')['document']) {
                 $fileName = $request->files->get('appbundle_charge')['document']->getClientOriginalName();
                 $file->move(

@@ -46,9 +46,6 @@ class PaymentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($payment);
-            $em->flush();
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
             $file = $payment->getDocument();
 
@@ -60,9 +57,9 @@ class PaymentController extends Controller
                 );
                 $payment->setDocument($fileName);
             }
-
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($payment);
             $em->flush();
-
             return $this->redirectToRoute('payment_show', array('id' => $payment->getId()));
         }
 
@@ -101,7 +98,7 @@ class PaymentController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
             $file = $payment->getDocument();
             if ($fileName = $request->files->get('appbundle_payment')['document']) {
@@ -111,8 +108,11 @@ class PaymentController extends Controller
                     $fileName
                 );
                 $payment->setDocument($fileName);
-            }
 
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($payment);
+            $em->flush();
             return $this->redirectToRoute('payment_edit', array('id' => $payment->getId()));
         }
 
