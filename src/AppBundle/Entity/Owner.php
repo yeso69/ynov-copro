@@ -26,6 +26,12 @@ class Owner extends BaseUser
      */
     protected $createdDiscussions;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Project", mappedBy="creator")
+     */
+    protected $createdProjects;
+
     /**
      * @ORM\Column(type="string", length=200)
      */

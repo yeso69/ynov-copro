@@ -1,40 +1,5 @@
 {% extends 'base.html.twig' %}
  {% set title = "Messages" %}
-{#{% block body %}
-    <h1>Discussions list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for discussion in discussions %}
-            <tr>
-                <td><a href="{{ path('discussion_show', { 'id': discussion.id }) }}">{{ discussion.id }}</a></td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('discussion_show', { 'id': discussion.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('discussion_edit', { 'id': discussion.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('discussion_new') }}">Create a new discussion</a>
-        </li>
-    </ul>
-{% endblock %}#}
 
 {% block body %}
 

@@ -206,7 +206,7 @@ class Discussion
 
     public function __toString()
     {
-        return "aa";
+        return "";
     }
 
     /**

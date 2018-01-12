@@ -53,11 +53,11 @@ class AppBundleFixtures extends Fixture
         $manager->persist($admin);
         $manager->flush();
 
-        $contract = new Contract();
-        $contract->setProvider('Contract travaux toit');
-        $manager->persist($contract);
-
-        $manager->flush();
+//        $contract = new Contract();
+//        $contract->setProvider('Contract travaux toit');
+//        $manager->persist($contract);
+//
+//        $manager->flush();
 
 /*        $discus = new Discussion();
         $discus->setCreator($toto);

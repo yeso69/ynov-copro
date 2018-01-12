@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Project
 {
+
+    const STATUS_IN_DISCUSSION = 'In discussion';
+    const STATUS_WAINTING_FOR_EXECUTION = 'Waiting for execution';
+    const STATUS_DONE = 'Done';
     /**
      * @var int
      *
@@ -25,12 +30,6 @@ class Project
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Survey", mappedBy="project")
      */
     private $surveys;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="notes", type="string", length=255, nullable=true)
-     */
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Note", mappedBy="project")
@@ -54,48 +53,43 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", columnDefinition="enum('IN_DISCUSSION', 'WAIT_FOR_EXECUTION', 'DONE')")
+     * @ORM\Column(name="status", type="string")
      */
     private $status;
 
     /**
+     * @var datetime
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="openDate", type="datetime")
      */
     private $openDate;
 
     /**
+     * @var datetime
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="closeDate", type="datetime", nullable=true)
      */
     private $closeDate;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="attachedFiles", type="", length=255)
-     */
-// PIECES JOINTES
-//    /**
-//     * @ORM\Column(type="string", length=500, nullable=true)
-//     * @Assert\File(mimeTypes={ "application/pdf" })
-//     */
-//    private $attachedFiles;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="creator", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner", inversedBy="createdProjects")
+     * @ORM\JoinColumn(name="owner_id")
      */
     private $creator;
 
-
     /**
-     * Many Users have Many Groups.
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner")
      * @ORM\JoinTable(name="project_members")
      */
     private $members;
+
+
+
+    public function __construct(){
+        $this->members = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->openDate = new \DateTime('now');
+    }
 
 
     /**
@@ -205,17 +199,14 @@ class Project
     }
 
     /**
-     * Set status
-     *
-     * @param string $status
-     *
-     * @return Project
+     * @param $status
      */
     public function setStatus($status)
     {
+        if (!in_array($status, array(self::STATUS_IN_DISCUSSION, self::STATUS_WAINTING_FOR_EXECUTION, self::STATUS_DONE))) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
         $this->status = $status;
-
-        return $this;
     }
 
     /**

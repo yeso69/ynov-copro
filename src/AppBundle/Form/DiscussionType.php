@@ -26,8 +26,6 @@ class DiscussionType extends AbstractType
                     'mapped' => false,
                 )
             );
-
-
     }/**
      * {@inheritdoc}
      */
