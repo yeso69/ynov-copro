@@ -17,7 +17,7 @@ class OwnerController extends Controller
     /**
      * Lists all owner entities.
      *
-     * @Route("/", name="user_index")
+     * @Route("/", name="owner_index")
      * @Method("GET")
      */
     public function indexAction()
