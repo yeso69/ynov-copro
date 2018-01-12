@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Discussion;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Discussion controller.
@@ -22,9 +24,7 @@ class DiscussionController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $discussions = $em->getRepository('AppBundle:Discussion')->findAll();
+        $discussions = $this->getUser()->getDiscussions();
 
         return $this->render('discussion/index.html.twig', array(
             'discussions' => $discussions,
@@ -45,7 +45,24 @@ class DiscussionController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            //get discussion and prepare it
+            $discussion = $form->getData();
+            $user = $this->getUser();
+            $discussion->setCreator($user);
+            $discussion->setMembers($discussion->getMembers());
+            $discussion->addMember($user);
+            $discussion->setArchived(false);
+
+            //create new message
+            $message = new Message();
+            $message->setAuthor($user);
+            $message->setDiscussion($discussion);
+            $content = $form->get('message')->getData();
+            $message->setContent($content);
+
             $em->persist($discussion);
+            $em->persist($message);
             $em->flush();
 
             return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
@@ -61,15 +78,27 @@ class DiscussionController extends Controller
      * Finds and displays a discussion entity.
      *
      * @Route("/{id}", name="discussion_show")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function showAction(Discussion $discussion)
+    public function showAction(Discussion $discussion, Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        $message = new Message();
+        $form = $this->createForm('AppBundle\Form\MessageType', $message);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setAuthor($this->getUser());
+            $message->setDiscussion($discussion);
+            $em->persist($message);
+            $em->flush();
+        }
+
         $deleteForm = $this->createDeleteForm($discussion);
 
         return $this->render('discussion/show.html.twig', array(
             'discussion' => $discussion,
             'delete_form' => $deleteForm->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -81,6 +110,10 @@ class DiscussionController extends Controller
      */
     public function editAction(Request $request, Discussion $discussion)
     {
+        if ($discussion->getArchived()){
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
+
         $deleteForm = $this->createDeleteForm($discussion);
         $editForm = $this->createForm('AppBundle\Form\DiscussionType', $discussion);
         $editForm->handleRequest($request);
@@ -101,19 +134,14 @@ class DiscussionController extends Controller
     /**
      * Deletes a discussion entity.
      *
-     * @Route("/{id}", name="discussion_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="discussion_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Discussion $discussion)
     {
-        $form = $this->createDeleteForm($discussion);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($discussion);
-            $em->flush();
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($discussion);
+        $em->flush();
 
         return $this->redirectToRoute('discussion_index');
     }

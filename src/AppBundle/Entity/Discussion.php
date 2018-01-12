@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OrderBy;
 
 /**
  * @ORM\Entity
@@ -20,7 +20,31 @@ class Discussion
     private $id;
 
     /**
-     * @var string
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner", inversedBy="createdDiscussions")
+     * @ORM\JoinColumn(name="owner_id")
+     */
+    private $creator;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner", inversedBy="discussions")
+     * @ORM\JoinColumn()
+     */
+
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner")
+     * @ORM\JoinTable(name="disscussion_members")
+     */
+    private $members;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="discussion")
+     * @OrderBy({"date" = "ASC"})
+     */
+    private $messages;
+
+    /**
+     * @ORM\Column(type="text")
      */
     private $subject;
 
@@ -28,6 +52,11 @@ class Discussion
      * @var boolean
      */
     private $public;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $archived;
 
     /**
      * @return mixed
@@ -76,21 +105,6 @@ class Discussion
     {
         $this->members = $members;
     }
-
-    /**
-     * @OneToOne(targetEntity="AppBundle\Entity\Owner")
-     */
-    private $creator;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner", inversedBy="discussions")
-     */
-    private $members;
-
-    /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="discussion")
-     */
-    private $messages;
 
 
     /**
@@ -194,4 +208,22 @@ class Discussion
     {
         return "aa";
     }
+
+    /**
+     * @return mixed
+     */
+    public function getArchived()
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param mixed $archived
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+    }
+
+
 }

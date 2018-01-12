@@ -15,37 +15,16 @@ use FOS\UserBundle\Model\User as BaseUser;
 class Owner extends BaseUser
 {
     /**
-     * {@inheritdoc}
-     */
-    public function getRoles()
-    {
-
-        $roles = $this->roles;
-
-        foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRoles());
-        }
-
-        // we need to make sure to have at least one role
-        $roles[] = static::ROLE_DEFAULT;
-
-        return array_unique($roles);
-
-    }
-
-    /**
-     * @param array $roles
-     */
-    public function setRoles(array $roles)
-    {
-        $this->roles = $roles;
-    }
-    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Discussion", mappedBy="creator")
+     */
+    protected $createdDiscussions;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -59,14 +38,20 @@ class Owner extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Discussion", mappedBy="members")
-     *
+     * @ORM\JoinColumn(nullable=true)
      */
     private $discussions;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="owner")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $payment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Notification", inversedBy="recipients")
+     */
+    private $notifications;
 
     /**
      * @return mixed
@@ -83,32 +68,6 @@ class Owner extends BaseUser
     {
         $this->payment = $payment;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getMessages()
-    {
-        return $this->messages;
-    }
-
-    /**
-     * @param mixed $messages
-     */
-    public function setMessages($messages)
-    {
-        $this->messages = $messages;
-    }
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Message", inversedBy="author")
-     */
-    private $messages;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Notification", inversedBy="recipients")
-     */
-    private $notifications;
 
     /**
      * @return mixed
@@ -188,8 +147,6 @@ class Owner extends BaseUser
     {
         return $this->firstname;
     }
-
-
     /**
      * User constructor.
      */
@@ -206,7 +163,6 @@ class Owner extends BaseUser
      *
      * @return Owner
      */
-
     public function addDiscussion(\AppBundle\Entity\Discussion $discussion)
     {
         $this->discussions[] = $discussion;
@@ -337,6 +293,22 @@ class Owner extends BaseUser
     }
 
     /**
+     * @return mixed
+     */
+    public function getCreatedDiscussions()
+    {
+        return $this->createdDiscussions;
+    }
+
+    /**
+     * @param mixed $createdDiscussions
+     */
+    public function setCreatedDiscussions($createdDiscussions)
+    {
+        $this->createdDiscussions = $createdDiscussions;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function addRole($role)
@@ -351,6 +323,31 @@ class Owner extends BaseUser
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
+
+        // we need to make sure to have at least one role
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
     }
 
     /**

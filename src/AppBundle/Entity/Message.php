@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -20,39 +20,35 @@ class Message
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $subject;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Owner", mappedBy="messages")
+     * Many Messages has One Author.
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner")
+     * @ORM\JoinColumn(name="author_id")
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Discussion", inversedBy="messages")
+     * @ORM\JoinColumn(name="entity1_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $discussion;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="datetime")
      */
-    private $archived;
+    private $date;
 
     /**
      * Message constructor.
-     * @param $discussion
      */
     public function __construct()
     {
-        $this->discussion = new ArrayCollection();
+        $this->date = new \DateTime("now");
     }
-
 
     /**
      * @return mixed
@@ -97,30 +93,6 @@ class Message
     }
 
     /**
-     * Set subject
-     *
-     * @param string $subject
-     *
-     * @return Message
-     */
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-
-        return $this;
-    }
-
-    /**
-     * Get subject
-     *
-     * @return string
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
      * Set content
      *
      * @param string $content
@@ -147,17 +119,17 @@ class Message
     /**
      * @return mixed
      */
-    public function getArchived()
+    public function getDate()
     {
-        return $this->archived;
+        return $this->date;
     }
 
     /**
-     * @param mixed $archived
+     * @param mixed $date
      */
-    public function setArchived($archived)
+    public function setDate($date)
     {
-        $this->archived = $archived;
+        $this->date = $date;
     }
 
 }

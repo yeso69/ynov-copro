@@ -3,12 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Message;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Message controller.
@@ -44,11 +43,11 @@ class MessageController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $message = new Message();
         $form = $this->createForm('AppBundle\Form\MessageType', $message);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($message);
             $em->flush();
 
@@ -140,19 +139,6 @@ class MessageController extends Controller
      */
     public function deleteAction(Request $request, Message $message)
     {
-/*  LEGACY
-    if ($message->getArchived()){
-            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
-        }
-        $form = $this->createDeleteForm($message);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($message);
-            $em->flush();
-        }*/
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($message);
         $em->flush();
