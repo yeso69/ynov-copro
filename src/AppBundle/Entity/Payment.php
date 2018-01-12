@@ -204,20 +204,26 @@ class Payment
     /**
      * @ORM\PrePersist()
      */
-    public function checkAmount(){
+    public function checkAmount()
+    {
         $payments = $this->getCharge()->getPayment();
-        $paid = 0 ;
-        if($payments){
-            foreach ($payments as $payment){
+        $paid = 0;
+        if ($payments) {
+            foreach ($payments as $payment) {
                 $paid += $payment->getAmount();
             }
-            if( $paid+$this->getAmount() > $this->getCharge()->getCost()
-                or $this->getAmount() >  $this->getCharge()->getCost() / sizeof($this->getCharge()->getConcernerdOwners()) ){
-                throw new \Exception('Payment amount superior to task cost');
+            try {
+                if ($paid + $this->getAmount() > $this->getCharge()->getCost()
+                    or $this->getAmount() > $this->getCharge()->getCost() / sizeof($this->getCharge()->getConcernedOwners())
+                ) {
+                    throw new \Exception('Payment amount superior to task cost');
+                } else if ($paid + $this->getAmount() == $this->getCharge()->getCost()) {
+                    $this->getCharge()->setStatus(True);
+                }
+            } catch (\DivisionByZeroError $e) {
             }
-            else if($paid+$this->getAmount() == $this->getCharge()->getCost()){
-                $this->getCharge()->setStatus(True);
-            }
+
+
         }
     }
 }

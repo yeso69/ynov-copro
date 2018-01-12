@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PostRemove;
 use Symfony\Component\Debug\Exception\ContextErrorException;
@@ -286,5 +287,14 @@ class Charge
     public function __toString()
     {
         return $this->subject;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function checkDate(){
+            if ($this->getDueDate() < new \DateTime("now")){
+                throw new \Exception("Due date cant be before today !");
+            }
     }
 }
