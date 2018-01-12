@@ -100,7 +100,7 @@ class Payment
     private $document;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=10, nullable=true)
      */
     private $type;
 
@@ -109,14 +109,35 @@ class Payment
      */
     private $charge;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $done;
+
+    /**
+     * @return mixed
+     */
+    public function getDone()
+    {
+        return $this->done;
+    }
+
+    /**
+     * @param mixed $done
+     */
+    public function setDone($done)
+    {
+        $this->done = $done;
+    }
 
     /**
      * Payment constructor.
      */
     public function __construct()
     {
-        $this->contract = new ArrayCollection();
+        //$this->contract = new ArrayCollection();
         $this->charge = new ArrayCollection();
+        $this->required = true ;
     }
 
     /**
@@ -198,7 +219,7 @@ class Payment
 
     public function __toString()
     {
-        return $this->owner . " paid " . strval($this->amount) . " €";
+        return strval($this->amount) . " €";
     }
 
     /**

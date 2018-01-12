@@ -59,7 +59,6 @@ class Project
     private $status;
 
     /**
-     * @var datetime
      *
      * @ORM\Column(name="openDate", type="datetime")
      */

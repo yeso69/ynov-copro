@@ -8,10 +8,12 @@
     <div class="card">
         <div class="header bg-pink">
             <h2>New charge</h2>
+
         </div>
 
         <div class="body">
             {{ form_start(form) }}
+            {{ form_errors(form) }}
             {{ form_label(form.subject) }}
             <div class="form-group">
                 <div class="form-line">

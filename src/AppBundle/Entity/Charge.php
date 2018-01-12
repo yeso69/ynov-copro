@@ -50,6 +50,7 @@ class Charge
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\GreaterThan("today")
      */
     private $dueDate;
 
@@ -65,7 +66,7 @@ class Charge
     private $document;
 
     /**
-     * @ORM\JoinColumn(name="id_owners", referencedColumnName="id", nullable=true)
+
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Owner", mappedBy="charges")
      */
     private $concernedOwners;
@@ -75,12 +76,12 @@ class Charge
      */
     private $contract;
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="charge")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="charge", cascade={"remove"})
      */
     private $payment;
 
     /**
-     * @return mixed
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getConcernedOwners()
     {
@@ -90,7 +91,7 @@ class Charge
     /**
      * @param mixed $concernedOwners
      */
-    public function setConcernedOwners($concernedOwners  = null)
+    public function setConcernedOwners($concernedOwners)
     {
         $this->concernedOwners = $concernedOwners;
     }
@@ -294,7 +295,8 @@ class Charge
      */
     public function checkDate(){
             if ($this->getDueDate() < new \DateTime("now")){
-                throw new \Exception("Due date cant be before today !");
+                //throw new \Exception("Due date cant be before today !");
             }
     }
+
 }

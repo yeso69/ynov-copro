@@ -15,6 +15,7 @@
                         <tr>
                             <th>Charge</th>
                             <th>Amount</th>
+                            <th>Status</th>
                             <th>Date</th>
                             <th>Type</th>
                             <th>Documents</th>
@@ -22,17 +23,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th>{{ payment.charge }}</th>
-                                <td>{{ payment.amount }}</td>
-                                <td>{{ payment.date|date('d-m-Y') }}</td>
-                                <td>{{ payment.type }}</td>
-                                <td>{% if payment.document %}<a href="{{ path('file_show', {'id':payment.id, 'entity':'payment'}) }}">{{ payment.document }}</a>
-                                    {% else %}Pas de document
-                                    {% endif %}
-                                </td>
-                                <td>{{ payment.contract }}</td>
-                            </tr>
+                        <tr>
+                            <th>{{ payment.charge }}</th>
+                            <td>{{ payment.amount }}</td>
+                            {% if payment.done %}
+                                <td class="bg-green">Paid</td>
+                            {% else %}
+                                <td class="bg-red">Due</td>
+                            {% endif %}
+                            <td>{{ payment.date|date('d-m-Y') }}</td>
+                            <td>{{ payment.type }}</td>
+                            <td>{% if payment.document %}<a
+                                    href="{{ path('file_show', {'id':payment.id, 'entity':'payment'}) }}">{{ payment.document }}</a>
+                                {% else %}No document.
+                                {% endif %}
+                            </td>
+                            <td>{{ payment.contract }}</td>
+                        </tr>
                         </tbody>
                     </table>
                     {% for message in app.flashes('notice') %}

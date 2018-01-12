@@ -30,7 +30,7 @@ class ProductRepositoryTest extends KernelTestCase
      */
     public function testConstraint()
     {
-        $charge = $this->em->getRepository(Charge::class)->find(1);
+        $charge = $this->em->getRepository(Charge::class)->find(4);
         $payment = new Payment();
         $payment-> setAmount(10000000);
         $payment->setOwner($this->em->getRepository(Owner::class)->find(1));

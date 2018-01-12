@@ -23,12 +23,14 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        {{ form_widget(edit_form.charge, { 'attr': {'class': 'form-control show-tick', 'title':'Charge'}}) }}
+                        {{ form_label(edit_form.charge) }}
+                        {{ form_widget(edit_form.charge, { 'attr': {'class': 'form-control show-tick'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        {{ form_widget(edit_form.contract, { 'attr': {'class': 'form-control show-tick', 'title':'Contract'}}) }}
+                        {{ form_label(edit_form.contract) }}
+                        {{ form_widget(edit_form.contract, { 'attr': {'class': 'form-control show-tick'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -46,12 +48,20 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        {{ form_widget(edit_form.owner, { 'attr': {'class': 'form-control', 'title':'Owner'}}) }}
+                        {{ form_label(edit_form.owner) }}
+                        {{ form_widget(edit_form.owner, { 'attr': {'class': 'form-control'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
-                        {{ form_widget(edit_form.type, { 'attr': {'class': 'form-control', 'title':'Payment type'}}) }}
+                        {{ form_label(edit_form.type) }}
+                        {{ form_widget(edit_form.type, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(edit_form.done) }}
+                        {{ form_widget(edit_form.done, { 'attr': {'class': 'form-control'}}) }}
                     </div>
                 </div>
                 <div class="form-group text-center">

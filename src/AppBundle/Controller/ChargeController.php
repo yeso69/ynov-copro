@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Charge;
+use AppBundle\Entity\Payment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -27,8 +28,7 @@ class ChargeController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $charges = $em->getRepository('AppBundle:Charge')->findAll();
+        $charges = $em->getRepository("AppBundle:Charge")->findAll();
 
         return $this->render('charge/index.html.twig', array(
             'charges' => $charges,
@@ -49,7 +49,7 @@ class ChargeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $charge->getDocument();
-            if(count($form->getNormData()->getConcernedOwners())== 0){
+            if (count($form->getNormData()->getConcernedOwners()) == 0) {
                 $charge->setConcernedOwners(
                     $this->getDoctrine()->getManager()->getRepository('AppBundle:Owner')->findAll()
                 );
@@ -61,28 +61,38 @@ class ChargeController extends Controller
                     $fileName
                 );
                 $charge->setDocument($fileName);
-                try{
+                try {
                     $file->move(
                         $this->getParameter('uploads_directory'),
                         $fileName
                     );
-                }catch (FileException $e){}
+                } catch (FileException $e) {
+                }
 
                 $charge->setDocument($fileName);
             }
-
-
 
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($charge);
             $em->flush();
 
+            $cost = $charge->getCost() / count($charge->getConcernedOwners());
+            foreach ($charge->getConcernedOwners() as $user) {
+                $payment = new Payment();
+                $payment->setOwner($user);
+                $payment->setAmount($cost);
+                $payment->setCharge($charge);
+                $payment->setDone(false);
+                $em->persist($payment);
+                $em->flush();
+            }
+
             return $this->redirectToRoute('charge_show', array('id' => $charge->getId()));
         }
 
         return $this->render('charge/new.html.twig', array(
-                'charge' => $charge,
+            'charge' => $charge,
             'form' => $form->createView(),
         ));
     }
@@ -111,11 +121,11 @@ class ChargeController extends Controller
      */
     public function editAction(Request $request, Charge $charge)
     {
-        try{
+        try {
             $charge->setDocument(
-                new File($this->getParameter('uploads_directory').'/'.$charge->getDocument())
+                new File($this->getParameter('uploads_directory') . '/' . $charge->getDocument())
             );
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
 
         }
 
@@ -140,7 +150,6 @@ class ChargeController extends Controller
      * Deletes a charge entity.
      * @Method("GET")
      * @Route("/{id}/delete", name="charge_delete")
-
      */
     public function deleteAction(Request $request, Charge $charge)
     {
@@ -163,7 +172,6 @@ class ChargeController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('charge_delete', array('id' => $charge->getId())))
             ->setMethod('GET')
-            ->getForm()
-        ;
+            ->getForm();
     }
 }

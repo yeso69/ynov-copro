@@ -53,30 +53,30 @@ class AppBundleFixtures extends Fixture
         $manager->persist($admin);
         $manager->flush();
 
-//        $contract = new Contract();
-//        $contract->setProvider('Contract travaux toit');
-//        $manager->persist($contract);
-//
-//        $manager->flush();
+        $contract = new Contract();
+        $contract->setProvider('Contract travaux toit');
+        $manager->persist($contract);
 
-/*        $discus = new Discussion();
-        $discus->setCreator($toto);
-        $discus->setPublic(true);
-        $discus->setSubject('Test');
-        $discus->addMember($tata);
+        $manager->flush();
 
-        $manager->persist($discus);
-        $manager->flush();*/
+        /*        $discus = new Discussion();
+                $discus->setCreator($toto);
+                $discus->setPublic(true);
+                $discus->setSubject('Test');
+                $discus->addMember($tata);
 
-/*        $msg = new Message();
-        $msg->setSubject('Important message');
-        $msg->setAuthor($toto);
-        $msg->setContent('Hey here is my message');
-        $msg->setDiscussion($discus);
-        $msg->setArchived(false);
+                $manager->persist($discus);
+                $manager->flush();*/
 
-        $manager->persist($msg);
-        $manager->flush();*/
+        /*        $msg = new Message();
+                $msg->setSubject('Important message');
+                $msg->setAuthor($toto);
+                $msg->setContent('Hey here is my message');
+                $msg->setDiscussion($discus);
+                $msg->setArchived(false);
+
+                $manager->persist($msg);
+                $manager->flush();*/
 
     }
 }

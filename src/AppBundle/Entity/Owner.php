@@ -59,6 +59,7 @@ class Owner extends BaseUser
      */
     private $notifications;
 
+
     /**
      * @return mixed
      */
@@ -218,7 +219,7 @@ class Owner extends BaseUser
     private $charges;
 
     /**
-     * @return mixed
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCharges()
     {
