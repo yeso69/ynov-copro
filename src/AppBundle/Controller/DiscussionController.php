@@ -39,28 +39,38 @@ class DiscussionController extends Controller
      */
     public function newAction(Request $request)
     {
-        $discussion = new Discussion();
+        $discussion = new Discussion($this->getUser());
         $form = $this->createForm('AppBundle\Form\DiscussionType', $discussion);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
 
             //get discussion and prepare it
             $discussion = $form->getData();
-            $user = $this->getUser();
             $discussion->setCreator($user);
             $discussion->setMembers($discussion->getMembers());
-            $discussion->addMember($user);
             $discussion->setArchived(false);
 
+
+            //if user selected do not add in members
+            $members = $discussion->getMembers();
+            $isSelected = false;
+            foreach ($members as $member){
+                if($member->getId() == $user->getId()) {
+                    $isSelected = true;break;
+                }
+            }
+            if(!$isSelected){$discussion->addMember($user);}
+
             //create new message
-            $message = new Message();
-            $message->setAuthor($user);
+            $message = new Message($user);
             $message->setDiscussion($discussion);
             $content = $form->get('message')->getData();
             $message->setContent($content);
 
+            //persist data
             $em->persist($discussion);
             $em->persist($message);
             $em->flush();
@@ -83,11 +93,10 @@ class DiscussionController extends Controller
     public function showAction(Discussion $discussion, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $message = new Message();
+        $message = new Message($this->getUser());
         $form = $this->createForm('AppBundle\Form\MessageType', $message);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $message->setAuthor($this->getUser());
             $message->setDiscussion($discussion);
             $em->persist($message);
             $em->flush();

@@ -85,7 +85,7 @@ class Project
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Discussion")
-     * @JoinColumn(name="discussion_id", referencedColumnName="id")
+     * @JoinColumn(name="discussion_id")
      */
     private $discussion;
 
