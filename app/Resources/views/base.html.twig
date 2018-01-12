@@ -284,7 +284,6 @@
                 <img src="{{ asset('images/user.png') }}" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
-                    {% if is_granted('ROLE_ADMIN') %}
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</div>
                 <div class="email">{{ app.user.email }}</div>
                 <div class="btn-group user-helper-dropdown">
@@ -292,14 +291,9 @@
                     <ul class="dropdown-menu pull-right">
                         <li><a href="javascript:void(0);"><i class="material-icons">person</i>Mon Compte</a></li>
                         <li role="seperator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                        <li role="seperator" class="divider"></li>
-                        <li><a href="javascript:void(0);"><i class="material-icons">input</i>Se déconnecter</a></li>
+                        <li><a href="{{ path('fos_user_security_logout') }}"><i class="material-icons">input</i>Se déconnecter</a></li>
                     </ul>
                 </div>
-                {% endif %}
             </div>
         </div>
         <!-- #User Info -->
@@ -314,7 +308,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ path('message_index') }}">
+                    <a href="{{ path('discussion_index') }}">
                         <i class="material-icons">mail</i>
                         <span>Messages</span>
                     </a>

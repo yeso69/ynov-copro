@@ -59,29 +59,6 @@ class Contract
     }
 
     /**
-     * @ORM\Column(type="datetime", nullable=True)
-     */
-
-    private $creationDate;
-
-
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="contract")
-     */
-    private $payment;
-
-    /**
      * @return mixed
      */
     public function getPayment()
