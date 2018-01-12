@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Project
@@ -85,7 +86,7 @@ class Project
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Discussion")
-     * @JoinColumn(name="discussion_id", referencedColumnName="id")
+     * @JoinColumn(name="discussion_id")
      */
     private $discussion;
 

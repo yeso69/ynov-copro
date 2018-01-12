@@ -199,9 +199,10 @@ class Discussion
         return $this->messages;
     }
 
-    public function __construct(){
+    public function __construct(Owner $currentUser){
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->creator = $currentUser;
     }
 
     public function __toString()

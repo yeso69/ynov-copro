@@ -45,8 +45,9 @@ class Message
     /**
      * Message constructor.
      */
-    public function __construct()
+    public function __construct(Owner $author)
     {
+        $this->author = $author;
         $this->date = new \DateTime("now");
     }
 
