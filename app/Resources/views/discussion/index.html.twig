@@ -3,54 +3,56 @@
 
 {% block body %}
 
-<!-- Hover Rows -->
-<div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header bg-light-blue">
-                <a class="btn btn-success waves-effect pull-right" href="{{ path('discussion_new') }}">
-                    <i class="material-icons">add_circle</i>
-                    <span>Nouveau</span>
-                </a>
-                <h2>{{ title|upper }}</h2>
-            </div>
-            <div class="body table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Suject</th>
-                        <th>Author</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for discussion in discussions %}
-                            <tr>
-                                <th>{{ discussion.subject }}</th>
-                                <th>{{ discussion.creator.username }}</th>
-                                {% if discussion.archived == true %}
-                                    <td>Archived</td>
-                                {% else %}
-                                    <td>Live</td>
-                                {% endif %}
-                                <td>
-                                    <a href="{{ url('discussion_show', {id: discussion.id }) }}">
-                                        <i class="material-icons">visibility</i>
-                                    </a>
-                                    <a href="{{ url('discussion_delete', {id: discussion.id }) }}">
-                                        <i class="material-icons">delete</i>
-                                    </a>
-                                </td>
+    <!-- Hover Rows -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header bg-light-blue">
+                    <a class="btn btn-success waves-effect pull-right" href="{{ path('discussion_new') }}">
+                        <i class="material-icons">add_circle</i>
+                        <span>Nouveau</span>
+                    </a>
+                    <h2>{{ title|upper }}</h2>
+                </div>
+                <div class="body table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Suject</th>
+                            <th>Author</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if discussions %}
+                            {% for discussion in discussions %}
+                                <tr>
+                                    <th>{{ discussion.subject }}</th>
+                                    <th>{{ discussion.creator.username }}</th>
+                                    {% if discussion.archived == true %}
+                                        <td>Archived</td>
+                                    {% else %}
+                                        <td>Live</td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="{{ url('discussion_show', {id: discussion.id }) }}">
+                                            <i class="material-icons">visibility</i>
+                                        </a>
+                                        <a href="{{ url('discussion_delete', {id: discussion.id }) }}">
+                                            <i class="material-icons">delete</i>
+                                        </a>
+                                    </td>
 
-                            </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- #END# Hover Rows -->
+    <!-- #END# Hover Rows -->
 
 {% endblock body %}

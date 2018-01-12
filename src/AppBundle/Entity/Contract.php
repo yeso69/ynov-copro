@@ -25,6 +25,10 @@ class Contract
      * @ORM\Column(type="text", length=200)
      */
     private $provider;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Payment", mappedBy="contract")
+     */
+    private $payment;
 
     /**
      * @return string
