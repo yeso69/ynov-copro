@@ -13,7 +13,7 @@
                             <i class="material-icons">add_circle</i>
                             <span>New</span>
                         </a>
-                        <h2>Dues charges</h2>
+                        <h2>Due charges</h2>
                     </div>
                     <div class="body table-responsive">
                         <table class="table table-hover">
@@ -33,9 +33,9 @@
                                     <td>{{ charge.cost }}</td>
                                     <td>{{ charge.dueDate|date('d/m/Y') }}</td>
                                     {% if charge.status == true %}
-                                        <td>Payé</td>
+                                        <td>Paid</td>
                                     {% else %}
-                                        <td>Payé</td>
+                                        <td>Due</td>
                                     {% endif %}
                                     <td>
                                         <a href="{{ url('charge_show', {id: charge.id }) }}">
@@ -71,7 +71,7 @@
                             <i class="material-icons">add_circle</i>
                             <span>New</span>
                         </a>
-                        <h2>Payment</h2>
+                        <h2>Due payments</h2>
                     </div>
                     <div class="body table-responsive">
                         <table class="table table-hover">
@@ -86,24 +86,26 @@
                             </thead>
                             <tbody>
                             {% for payment in payments %}
-                                <tr>
-                                    <th>{{ payment.charge }}</th>
-                                    <td>{{ payment.amount }}</td>
-                                    <td>{{ payment.date|date('d-m-Y') }}</td>
-                                    <td>{{ payment.type }}</td>
-                                    <td>
-                                        <a href="{{ url('payment_show', {id: payment.id }) }}">
-                                            <i class="material-icons">visibility</i>
-                                        </a>
-                                        <a href="{{ url('payment_edit', {id: payment.id }) }}">
-                                            <i class="material-icons">mode_edit</i>
-                                        </a>
-                                        <a href="{{ url('payment_delete', {id: payment.id}) }}">
-                                            <i class="material-icons">delete</i>
-                                        </a>
-                                    </td>
 
-                                </tr>
+                                    <tr class="bg-red">
+                                        <th>{{ payment.charge }}</th>
+                                        <td>{{ payment.amount }}</td>
+                                        <td>{{ payment.date|date('d-m-Y') }}</td>
+                                        <td>{{ payment.type }}</td>
+                                        <td>
+                                            <a href="{{ url('payment_show', {id: payment.id }) }}">
+                                                <i class="material-icons">visibility</i>
+                                            </a>
+                                            <a href="{{ url('payment_edit', {id: payment.id }) }}">
+                                                <i class="material-icons">mode_edit</i>
+                                            </a>
+                                            <a href="{{ url('payment_delete', {id: payment.id}) }}">
+                                                <i class="material-icons">delete</i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+
                             {% endfor %}
                             </tbody>
                         </table>

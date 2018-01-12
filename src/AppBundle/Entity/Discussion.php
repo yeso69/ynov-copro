@@ -25,14 +25,10 @@ class Discussion
      */
     private $creator;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner", inversedBy="discussions")
-     * @ORM\JoinColumn()
-     */
 
     /**
      * Many Users have Many Groups.
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner", inversedBy="discussions")
      * @ORM\JoinTable(name="disscussion_members")
      */
     private $members;

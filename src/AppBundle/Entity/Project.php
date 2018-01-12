@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Project
@@ -58,7 +59,6 @@ class Project
     private $status;
 
     /**
-     * @var datetime
      *
      * @ORM\Column(name="openDate", type="datetime")
      */

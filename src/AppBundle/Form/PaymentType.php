@@ -23,8 +23,9 @@ class PaymentType extends AbstractType
 
         $builder->add('amount')->add('contract')->add('owner')->add('date')
             ->add('document',FileType::class, array('label' => 'Document (PDF file)', 'required'=>False, 'data_class' => null))
-            ->add('type', ChoiceType::class, ["choices"=>['Check'=>'Check', 'Transfer'=>'Transfer']])
-            ->add('charge', EntityType::class, ["required"=>true, "class"=>"AppBundle\\Entity\\Charge"]);
+            ->add('type', ChoiceType::class, ["choices"=>['Check'=>'Check', 'Transfer'=>'Transfer'], "label"=>"Payment type"])
+            ->add('charge', EntityType::class, ["required"=>true, "class"=>"AppBundle:Charge", "label"=>"Charge"])
+            ->add('done', ChoiceType::class, ['choices'=>['Yes'=>true, 'No'=>false]]);
     }
     /**
      * {@inheritdoc}

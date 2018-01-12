@@ -26,7 +26,7 @@ class PaymentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $payments = $em->getRepository('AppBundle:Payment')->findAll();
+        $payments = $this->getUser()->getPayment();
 
         return $this->render('payment/index.html.twig', array(
             'payments' => $payments,

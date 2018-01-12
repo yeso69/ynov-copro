@@ -33,9 +33,9 @@
                             <td>{{ charge.cost }}</td>
                             <td>{{ charge.dueDate|date('d/m/Y') }}</td>
                             {% if charge.status == true %}
-                                <td>Payé</td>
+                                <td>Paid</td>
                             {% else %}
-                                <td>Payé</td>
+                                <td>Due</td>
                             {% endif %}
                             <td>
                                 <a href="{{ url('charge_show', {id: charge.id }) }}">
