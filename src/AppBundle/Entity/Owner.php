@@ -355,6 +355,6 @@ class Owner extends BaseUser
      */
     public function createToken(){
         $this->setConfirmationToken(substr(md5(microtime()),rand(0,26),32));
-        mail($this->getEmail(), 'Copro signup', 'Your account has been successfully registered.');
+        //mail($this->getEmail(), 'Copro signup', 'Your account has been successfully registered.');
     }
 }
