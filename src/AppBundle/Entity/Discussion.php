@@ -27,13 +27,6 @@ class Discussion
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner", inversedBy="discussions")
-     * @ORM\JoinColumn()
-     */
-
-    /**
-     * Many Users have Many Groups.
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Owner")
-     * @ORM\JoinTable(name="disscussion_members")
      */
     private $members;
 
@@ -206,7 +199,7 @@ class Discussion
 
     public function __toString()
     {
-        return "aa";
+        return $this->getSubject();
     }
 
     /**
