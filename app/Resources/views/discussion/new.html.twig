@@ -1,16 +1,49 @@
 {% extends 'base.html.twig' %}
- {% set title = "" %}
+{% set title = "" %}
+
 {% block body %}
-    <h1>Discussion creation</h1>
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>New message</h2>
+        </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+        <div class="body">
+            <div class="row clearfix">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.subject) }}
+                        {{ form_widget(form.subject, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                    </div>
+                </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('discussion_index') }}">Back to the list</a>
-        </li>
-    </ul>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.message) }}
+                        {{ form_widget(form.message, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.members) }}
+                        {{ form_widget(form.members, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" value="Submit" class="btn bg-cyan btn-block btn-lg waves-effect">
+                        <i class="material-icons">check</i>
+                        <span>SUBMIT</span>
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 {% endblock %}

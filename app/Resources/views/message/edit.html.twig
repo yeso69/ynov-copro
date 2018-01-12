@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% set title = 'Messages'|trans %}
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
-{% endblock %}
+
 {% block body %}
     <div class="card">
         <div class="header bg-pink">
@@ -30,7 +28,7 @@
             {{ form_widget(edit_form.author) }}
 
 
-               {% if app.user.hasRole('SUPER_ADMIN') %}
+{#                {% if app.user.hasRole('ROLE_ADMIN') %}
 
             {{ form_label(edit_form.archived) }}
             <div class="form-group">
@@ -38,7 +36,7 @@
                     {{ form_widget(edit_form.archived, {'attr': {'class': 'form-control', 'type': 'checkbox'}}) }}
                 </div>
             </div>
-            {% endif %}
+            {% endif %}#}
 
             <div class="form-group">
                 <button type="submit" value="Submit" class="btn bg-cyan btn-block btn-lg waves-effect">

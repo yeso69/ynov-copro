@@ -13,16 +13,19 @@
                 {{ form_start(form) }}
                 <div class="form-group">
                     <div class="form-line">
+                        {{ form_label(form.amount) }}
                         {{ form_widget(form.amount, { 'attr': {'class': 'form-control', 'placeholder':'Amount'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
+                        {{ form_label(form.charge) }}
                         {{ form_widget(form.charge, { 'attr': {'class': 'form-control show-tick', 'title':'Charge'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
+                        {{ form_label(form.contract) }}
                         {{ form_widget(form.contract, { 'attr': {'class': 'form-control show-tick', 'title':'Contract'}}) }}
                     </div>
                 </div>
@@ -40,11 +43,13 @@
                 </div>
                 <div class="form-group">
                     <div class="form-line">
+                        {{ form_label(form.owner) }}
                         {{ form_widget(form.owner, { 'attr': {'class': 'form-control', 'title':'Owner'}}) }}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-line">
+                        {{ form_label(form.type) }}
                         {{ form_widget(form.type, { 'attr': {'class': 'form-control', 'title':'Payment type'}}) }}
                     </div>
                 </div>
