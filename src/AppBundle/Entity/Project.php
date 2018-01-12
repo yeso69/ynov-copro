@@ -83,7 +83,11 @@ class Project
      */
     private $members;
 
-
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Discussion")
+     * @JoinColumn(name="discussion_id", referencedColumnName="id")
+     */
+    private $discussion;
 
     public function __construct(){
         $this->members = new ArrayCollection();
