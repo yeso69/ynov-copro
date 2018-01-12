@@ -194,7 +194,9 @@
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                         <i class="material-icons">mode_comment</i>
-                        <span class="label-count">9</span>
+                        <span class="label-count">
+                            {% if discussions is defined %}{{ discussions|length }} {% endif %}
+                        </span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">MESSAGES</li>
@@ -284,14 +286,12 @@
                 <img src="{{ asset('images/user.png') }}" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ app.user.username }}</div>
                 <div class="email">{{ app.user.email }}</div>
                 <div class="btn-group user-helper-dropdown">
                     <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>Mon Compte</a></li>
-                        <li role="seperator" class="divider"></li>
                         <li><a href="{{ path('fos_user_security_logout') }}"><i class="material-icons">input</i>Se déconnecter</a></li>
                     </ul>
                 </div>
@@ -306,7 +306,7 @@
                 <li class="active">
                     <a href="{{ path('homepage') }}">
                         <i class="material-icons">home</i>
-                        <span>Accueil</span>
+                        <span>Home</span>
                     </a>
                 </li>
                 <li>

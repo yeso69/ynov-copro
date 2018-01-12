@@ -49,7 +49,7 @@ class Charge
     private $cost;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $dueDate;
 

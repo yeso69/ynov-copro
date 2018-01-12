@@ -212,18 +212,13 @@ class Payment
             foreach ($payments as $payment) {
                 $paid += $payment->getAmount();
             }
-            try {
-                if ($paid + $this->getAmount() > $this->getCharge()->getCost()
-                    or $this->getAmount() > $this->getCharge()->getCost() / sizeof($this->getCharge()->getConcernedOwners())
-                ) {
-                    throw new \Exception('Payment amount superior to task cost');
-                } else if ($paid + $this->getAmount() == $this->getCharge()->getCost()) {
-                    $this->getCharge()->setStatus(True);
-                }
-            } catch (\DivisionByZeroError $e) {
+            if ($paid + $this->getAmount() > $this->getCharge()->getCost()
+                or $this->getAmount() > $this->getCharge()->getCost() / (sizeof($this->getCharge()->getConcernedOwners()) +1)
+            ) {
+                throw new \Exception('Payment amount superior to task cost');
+            } else if ($paid + $this->getAmount() == $this->getCharge()->getCost()) {
+                $this->getCharge()->setStatus(True);
             }
-
-
         }
     }
 }

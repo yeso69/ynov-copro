@@ -13,7 +13,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Unable to access this page!');
+        //$this->denyAccessUnlessGranted('ROLE_USER', null, 'Unable to access this page!');
         $em = $this->getDoctrine()->getManager();
         $charges = $em->getRepository("AppBundle:Charge")->findBy(['status'=>True]);
         $discussions = $this->getUser()->getDiscussions();
