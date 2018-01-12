@@ -1,0 +1,9 @@
+{% for label, messages in app.flashes(['error', 'danger', 'warning', 'success', 'info']) %}
+    {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <i class="material-icons">{{ label }}</i>
+                {{ message }}
+            </div>
+    {% endfor %}
+{% endfor %}

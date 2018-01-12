@@ -457,7 +457,9 @@
 
 <!-- #Main Content -->
 <section class="content">
+    {% include 'flash-message.html.twig' %}
     <div class="container-fluid">
+        {# display flash messages#}
         <div class="block-header">
             <h2>{{ title }}</h2>
         </div>

@@ -92,6 +92,9 @@ class DiscussionController extends Controller
      */
     public function showAction(Discussion $discussion, Request $request)
     {
+        if(!$this->userInDiscussion($discussion,$request)) {
+            return $this->redirectToRoute('discussion_index');
+        }
         $em = $this->getDoctrine()->getManager();
         $message = new Message($this->getUser());
         $form = $this->createForm('AppBundle\Form\MessageType', $message);
@@ -169,5 +172,20 @@ class DiscussionController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function userInDiscussion(Discussion $discussion, Request $request){
+        $user = $this->getUser();
+
+        $userIsMember = false;
+        foreach ($discussion->getMembers() as $member){
+            if($member->getId() == $user->getId()) {
+                $userIsMember = true;break;
+            }
+        }
+        if($userIsMember == false){
+            $this->addFlash('info', "Acces denied for this discussion.");
+        }
+        return $userIsMember;
     }
 }
