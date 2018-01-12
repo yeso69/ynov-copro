@@ -121,6 +121,7 @@ class ChargeController extends Controller
      */
     public function editAction(Request $request, Charge $charge)
     {
+        $doc = $charge->getDocument();
         try {
             $charge->setDocument(
                 new File($this->getParameter('uploads_directory') . '/' . $charge->getDocument())
@@ -134,6 +135,25 @@ class ChargeController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
+            $file = $charge->getDocument();
+            if($doc and !$file){
+                $file = $doc;
+            }
+            if ($fileName = $request->files->get('appbundle_payment')['document']) {
+
+                $fileName = $request->files->get('appbundle_payment')['document']->getClientOriginalName();
+                $file->move(
+                    $this->getParameter('documents_directory'),
+                    $fileName
+                );
+
+                $charge->setDocument($fileName);
+
+            }else{
+
+                $charge->setDocument($file);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('charge_edit', array('id' => $charge->getId()));

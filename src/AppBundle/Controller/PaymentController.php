@@ -47,6 +47,7 @@ class PaymentController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
+
             $file = $payment->getDocument();
 
             if ($fileName = $request->files->get('appbundle_payment')['document']) {
@@ -93,22 +94,29 @@ class PaymentController extends Controller
      */
     public function editAction(Request $request, Payment $payment)
     {
+        $doc = $payment->getDocument();
         $deleteForm = $this->createDeleteForm($payment);
         $editForm = $this->createForm('AppBundle\Form\PaymentType', $payment);
         $editForm->handleRequest($request);
-
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile.php $file */
             $file = $payment->getDocument();
+            if($doc and !$file){
+                $file = $doc;
+            }
             if ($fileName = $request->files->get('appbundle_payment')['document']) {
+
                 $fileName = $request->files->get('appbundle_payment')['document']->getClientOriginalName();
                 $file->move(
                     $this->getParameter('documents_directory'),
                     $fileName
                 );
+
                 $payment->setDocument($fileName);
 
+            }else{
+
+                $payment->setDocument($file);
             }
             $em = $this->getDoctrine()->getManager();
             $em->persist($payment);

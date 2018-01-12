@@ -223,7 +223,7 @@ class Payment
     }
 
     /**
-     * @ORM\PrePersist()
+     *
      */
     public function checkAmount()
     {
