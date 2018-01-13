@@ -59,6 +59,11 @@ class Owner extends BaseUser
      */
     private $notifications;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Charge", inversedBy="concernedOwners")
+     */
+    private $charges;
+
 
     /**
      * @return mixed
@@ -214,9 +219,20 @@ class Owner extends BaseUser
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Charge", inversedBy="concernedOwners")
+     * @return mixed
      */
-    private $charges;
+    public function getCreatedProjects()
+    {
+        return $this->createdProjects;
+    }
+
+    /**
+     * @param mixed $createdProjects
+     */
+    public function setCreatedProjects($createdProjects)
+    {
+        $this->createdProjects = $createdProjects;
+    }
 
     /**
      * @return \Doctrine\Common\Collections\Collection

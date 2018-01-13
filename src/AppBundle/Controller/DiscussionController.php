@@ -45,7 +45,6 @@ class DiscussionController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $user = $this->getUser();
 
             //get discussion and prepare it
             $discussion = $form->getData();
@@ -53,14 +52,13 @@ class DiscussionController extends Controller
             $discussion->setArchived(false);
 
             //create new message
-            $message = new Message($user);
-            $message->setDiscussion($discussion);
+            $message = new Message($this->getUser());
             $content = $form->get('message')->getData();
             $message->setContent($content);
+            $discussion->addMessage($message);
 
             //persist data
             $em->persist($discussion);
-            $em->persist($message);
             $em->flush();
 
             return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
@@ -91,6 +89,8 @@ class DiscussionController extends Controller
             $message->setDiscussion($discussion);
             $em->persist($message);
             $em->flush();
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
 
         $deleteForm = $this->createDeleteForm($discussion);

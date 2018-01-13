@@ -34,7 +34,7 @@ class Discussion
     private $members;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="discussion")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="discussion", cascade={"persist","remove"})
      * @OrderBy({"date" = "ASC"})
      */
     private $messages;
@@ -173,6 +173,7 @@ class Discussion
      */
     public function addMessage(\AppBundle\Entity\Message $message)
     {
+        $message->setDiscussion($this);
         $this->messages[] = $message;
 
         return $this;

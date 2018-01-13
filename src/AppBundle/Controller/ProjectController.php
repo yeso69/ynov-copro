@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Message;
 use AppBundle\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -66,11 +67,20 @@ class ProjectController extends Controller
      */
     public function showAction(Project $project)
     {
-        $deleteForm = $this->createDeleteForm($project);
+        if(!$this->userInProject($project)) {
+            return $this->redirectToRoute('project_index');
+        }
+        $allowedToEdit = $this->currentUserIsCreator($project);
+        $message = new Message($this->getUser());
+        $form = $this->createForm('AppBundle\Form\MessageType', $message, array(
+            'action' => $this->generateUrl('discussion_show', array('id' => $project->getDiscussion()->getId())),
+            'method' => 'POST',
+        ));
 
         return $this->render('project/show.html.twig', array(
             'project' => $project,
-            'delete_form' => $deleteForm->createView(),
+            'form' => $form->createView(),
+            'allowedToEdit' => $allowedToEdit,
         ));
     }
 
@@ -137,11 +147,27 @@ class ProjectController extends Controller
 
     private function currentUserIsCreator(Project $project){
         $isMine = false;
-        foreach ($this->getUser()->getCreatedDiscussions() as $mine){
+        foreach ($this->getUser()->getCreatedProjects() as $mine){
             if($mine->getId() == $project->getId()){
                 $isMine = true;break;
             }
         }
         return $isMine;
+    }
+
+    private function userInProject($project)
+    {
+        $user = $this->getUser();
+
+        $userIsMember = false;
+        foreach ($project->getMembers() as $member){
+            if($member->getId() == $user->getId()) {
+                $userIsMember = true;break;
+            }
+        }
+        if($userIsMember == false){
+            $this->addFlash('warning', "Acces denied for this project.");
+        }
+        return $userIsMember;
     }
 }

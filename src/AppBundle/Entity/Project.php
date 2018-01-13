@@ -322,6 +322,22 @@ class Project
     }
 
     /**
+     * @return mixed
+     */
+    public function getDiscussion()
+    {
+        return $this->discussion;
+    }
+
+    /**
+     * @param mixed $discussion
+     */
+    public function setDiscussion($discussion)
+    {
+        $this->discussion = $discussion;
+    }
+
+    /**
      * Set members
      *
      * @param string $members
@@ -351,7 +367,7 @@ class Project
      *
      * @param \AppBundle\Entity\Owner $member
      *
-     * @return Discussion
+     * @return Project
      */
     public function addMember(\AppBundle\Entity\Owner $member)
     {

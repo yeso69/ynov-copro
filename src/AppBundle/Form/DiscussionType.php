@@ -20,7 +20,7 @@ class DiscussionType extends AbstractType
             ->add('members', EntityType::class, array(
                 'class' => 'AppBundle:Owner',
                 'choice_label' => 'firstname',
-                'label' => 'Destinataire(s)',
+                'label' => 'Receiver(s)',
                 'multiple' => true,
             ))
             ->add('message', TextareaType::class, array(

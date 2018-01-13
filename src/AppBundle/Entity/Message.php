@@ -33,7 +33,7 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Discussion", inversedBy="messages")
-     * @ORM\JoinColumn(name="discussion_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="discussion_id", referencedColumnName="id")
      */
     private $discussion;
 
