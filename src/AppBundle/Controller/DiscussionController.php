@@ -115,7 +115,7 @@ class DiscussionController extends Controller
         if ($discussion->getArchived()){
             $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         }
-        $isMine = $this->isMineOrRedirect($discussion);
+        $isMine = $this->currentUserIsCreator($discussion);
         if($isMine == false){
             $this->addFlash('warning', "You are not allowed to edit this discussion.");
             return $this->redirectToRoute('discussion_index');
@@ -187,7 +187,6 @@ class DiscussionController extends Controller
     private function addCreatorInMembersIfNotSelected(Discussion $discussion)
     {
         $user = $this->getUser();
-
         //if user selected do not add in members
         $members = $discussion->getMembers();
         $isSelected = false;
@@ -199,7 +198,7 @@ class DiscussionController extends Controller
         if(!$isSelected){$discussion->addMember($user);}
     }
 
-    private function isMineOrRedirect(Discussion $discussion){
+    private function currentUserIsCreator(Discussion $discussion){
         $isMine = false;
         foreach ($this->getUser()->getCreatedDiscussions() as $mine){
             if($mine->getId() == $discussion->getId()){
