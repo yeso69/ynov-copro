@@ -129,7 +129,7 @@ class DiscussionController extends Controller
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', "Discussion edited successfuly.");
-            return $this->redirectToRoute('discussion_sho   w', array('id' => $discussion->getId()));
+            return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
         }
 
         return $this->render('discussion/edit.html.twig', array(
