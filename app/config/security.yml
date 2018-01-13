@@ -26,6 +26,7 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/owner/*, role: ROLE_ADMIN }
         - { path: ^/*, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/charge/new, role: ROLE_MANAGER }
         - { path: ^/charge/edit, role: ROLE_MANAGER }
@@ -33,6 +34,5 @@ security:
         - { path: ^/contract/new, role: ROLE_MANAGER }
         - { path: ^/contract/edit, role: ROLE_MANAGER }
         - { path: ^/contract/delete, role: ROLE_MANAGER }
-        - { path: ^/user/, role: ROLE_ADMIN }
 
 
