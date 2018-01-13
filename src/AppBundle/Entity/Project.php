@@ -84,15 +84,17 @@ class Project
     private $members;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Discussion")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Discussion", cascade={"persist","remove"})
      * @JoinColumn(name="discussion_id")
      */
     private $discussion;
 
-    public function __construct(){
+    public function __construct(Owner $user){
         $this->members = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->openDate = new \DateTime('now');
+        $this->creator = $user;
+        $this->discussion = new Discussion($user);
     }
 
 
@@ -164,7 +166,7 @@ class Project
     public function setName($name)
     {
         $this->name = $name;
-
+        $this->discussion->setSubject('Project: '.$name);
         return $this;
     }
 
@@ -329,7 +331,8 @@ class Project
     public function setMembers($members)
     {
         $this->members = $members;
-
+        $this->addCreatorInMembersIfNotSelected();
+        $this->discussion->setMembers($members);
         return $this;
     }
 
@@ -341,6 +344,35 @@ class Project
     public function getMembers()
     {
         return $this->members;
+    }
+
+    /**
+     * Add member
+     *
+     * @param \AppBundle\Entity\Owner $member
+     *
+     * @return Discussion
+     */
+    public function addMember(\AppBundle\Entity\Owner $member)
+    {
+        $this->members[] = $member;
+
+        return $this;
+    }
+
+
+    private function addCreatorInMembersIfNotSelected()
+    {
+        //if user selected do not add in members
+        $isSelected = false;
+        foreach ($this->members as $member){
+            if($member->getId() == $this->creator->getId()) {
+                $isSelected = true;break;
+            }
+        }
+        if(!$isSelected){
+            $this->addMember($this->creator);
+        }
     }
 }
 

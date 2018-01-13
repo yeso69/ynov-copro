@@ -39,13 +39,13 @@ class ProjectController extends Controller
      */
     public function newAction(Request $request)
     {
-        $project = new Project();
+        $project = new Project($this->getUser());
         $form = $this->createForm('AppBundle\Form\ProjectType', $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $project->setMembers($project->getMembers());
             $em = $this->getDoctrine()->getManager();
-            $project->setCreator($this->getUser());
             $em->persist($project);
             $em->flush();
 
@@ -102,20 +102,20 @@ class ProjectController extends Controller
     /**
      * Deletes a project entity.
      *
-     * @Route("/{id}", name="project_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="project_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Project $project)
     {
-        $form = $this->createDeleteForm($project);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        if($this->currentUserIsCreator($project) || $this->getUser()->hasRole('ROLE_ADMIN')) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($project);
             $em->flush();
+            $this->addFlash('success', "Project deleted successfully.");
         }
-
+        else {
+            $this->addFlash('warning', "You are not allowed to delete this project.");
+        }
         return $this->redirectToRoute('project_index');
     }
 
@@ -133,5 +133,15 @@ class ProjectController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    private function currentUserIsCreator(Project $project){
+        $isMine = false;
+        foreach ($this->getUser()->getCreatedDiscussions() as $mine){
+            if($mine->getId() == $project->getId()){
+                $isMine = true;break;
+            }
+        }
+        return $isMine;
     }
 }
