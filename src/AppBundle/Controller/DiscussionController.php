@@ -52,17 +52,7 @@ class DiscussionController extends Controller
             $discussion->setCreator($user);
             $discussion->setMembers($discussion->getMembers());
             $discussion->setArchived(false);
-
-
-            //if user selected do not add in members
-            $members = $discussion->getMembers();
-            $isSelected = false;
-            foreach ($members as $member){
-                if($member->getId() == $user->getId()) {
-                    $isSelected = true;break;
-                }
-            }
-            if(!$isSelected){$discussion->addMember($user);}
+            $this->addCreatorInMembersIfNotSelected($discussion);
 
             //create new message
             $message = new Message($user);
@@ -127,13 +117,15 @@ class DiscussionController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($discussion);
-        $editForm = $this->createForm('AppBundle\Form\DiscussionType', $discussion);
+        $editForm = $this->createForm('AppBundle\Form\DiscussionEditType', $discussion);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->addCreatorInMembersIfNotSelected($discussion);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('discussion_edit', array('id' => $discussion->getId()));
+            $this->addFlash('success', "Discussion edited successfuly.");
+            return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
         }
 
         return $this->render('discussion/edit.html.twig', array(
@@ -184,8 +176,23 @@ class DiscussionController extends Controller
             }
         }
         if($userIsMember == false){
-            $this->addFlash('info', "Acces denied for this discussion.");
+            $this->addFlash('warning', "Acces denied for this discussion.");
         }
         return $userIsMember;
+    }
+
+    private function addCreatorInMembersIfNotSelected(Discussion $discussion)
+    {
+        $user = $this->getUser();
+
+        //if user selected do not add in members
+        $members = $discussion->getMembers();
+        $isSelected = false;
+        foreach ($members as $member){
+            if($member->getId() == $user->getId()) {
+                $isSelected = true;break;
+            }
+        }
+        if(!$isSelected){$discussion->addMember($user);}
     }
 }
