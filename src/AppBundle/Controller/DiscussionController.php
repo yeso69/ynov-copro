@@ -115,6 +115,7 @@ class DiscussionController extends Controller
         if ($discussion->getArchived()){
             $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         }
+        $this->isMineOrRedirect($discussion);
 
         $editForm = $this->createForm('AppBundle\Form\DiscussionEditType', $discussion);
         $editForm->handleRequest($request);
@@ -192,5 +193,18 @@ class DiscussionController extends Controller
             }
         }
         if(!$isSelected){$discussion->addMember($user);}
+    }
+
+    private function isMineOrRedirect(Discussion $discussion){
+        $isMine = false;
+        foreach ($this->getUser()->getCreatedDiscussions() as $mine){
+            if($mine->getId() == $discussion->getId()){
+                $isMine = true;break;
+            }
+        }
+        if($isMine == false){
+            $this->addFlash('warning', "You are not allowed to edit this discussion.");
+            return $this->redirectToRoute('discussion_index');
+        }
     }
 }
