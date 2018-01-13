@@ -115,7 +115,11 @@ class DiscussionController extends Controller
         if ($discussion->getArchived()){
             $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         }
-        $this->isMineOrRedirect($discussion);
+        $isMine = $this->isMineOrRedirect($discussion);
+        if($isMine == false){
+            $this->addFlash('warning', "You are not allowed to edit this discussion.");
+            return $this->redirectToRoute('discussion_index');
+        }
 
         $editForm = $this->createForm('AppBundle\Form\DiscussionEditType', $discussion);
         $editForm->handleRequest($request);
@@ -125,7 +129,7 @@ class DiscussionController extends Controller
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', "Discussion edited successfuly.");
-            return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
+            return $this->redirectToRoute('discussion_sho   w', array('id' => $discussion->getId()));
         }
 
         return $this->render('discussion/edit.html.twig', array(
@@ -202,9 +206,6 @@ class DiscussionController extends Controller
                 $isMine = true;break;
             }
         }
-        if($isMine == false){
-            $this->addFlash('warning', "You are not allowed to edit this discussion.");
-            return $this->redirectToRoute('discussion_index');
-        }
+        return $isMine;
     }
 }
