@@ -116,7 +116,6 @@ class DiscussionController extends Controller
             $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         }
 
-        $deleteForm = $this->createDeleteForm($discussion);
         $editForm = $this->createForm('AppBundle\Form\DiscussionEditType', $discussion);
         $editForm->handleRequest($request);
 
@@ -130,8 +129,7 @@ class DiscussionController extends Controller
 
         return $this->render('discussion/edit.html.twig', array(
             'discussion' => $discussion,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form' => $editForm->createView(),
         ));
     }
 

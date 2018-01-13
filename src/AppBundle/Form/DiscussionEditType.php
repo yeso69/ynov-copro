@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DiscussionType extends AbstractType
+class DiscussionEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -22,10 +22,7 @@ class DiscussionType extends AbstractType
                 'choice_label' => 'firstname',
                 'label' => 'Destinataire(s)',
                 'multiple' => true,
-            ))
-            ->add('message', TextareaType::class, array(
-                    'mapped' => false,
-                )
+            )
             )->add('subject', TextType::class);
     }
 
