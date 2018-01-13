@@ -49,10 +49,8 @@ class DiscussionController extends Controller
 
             //get discussion and prepare it
             $discussion = $form->getData();
-            $discussion->setCreator($user);
             $discussion->setMembers($discussion->getMembers());
             $discussion->setArchived(false);
-            $this->addCreatorInMembersIfNotSelected($discussion);
 
             //create new message
             $message = new Message($user);
@@ -96,11 +94,13 @@ class DiscussionController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($discussion);
+        $allowedToEdit = $this->currentUserIsCreator($discussion);
 
         return $this->render('discussion/show.html.twig', array(
             'discussion' => $discussion,
             'delete_form' => $deleteForm->createView(),
             'form' => $form->createView(),
+            'allowedToEdit' => $allowedToEdit,
         ));
     }
 
@@ -125,10 +125,10 @@ class DiscussionController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->addCreatorInMembersIfNotSelected($discussion);
+            $discussion->setMembers($discussion->getMembers());
             $this->getDoctrine()->getManager()->flush();
 
-            $this->addFlash('success', "Discussion edited successfuly.");
+            $this->addFlash('success', "Discussion edited successfully.");
             return $this->redirectToRoute('discussion_show', array('id' => $discussion->getId()));
         }
 
@@ -146,10 +146,15 @@ class DiscussionController extends Controller
      */
     public function deleteAction(Request $request, Discussion $discussion)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($discussion);
-        $em->flush();
-
+        if($this->currentUserIsCreator($discussion) || $this->getUser()->hasRole('ROLE_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($discussion);
+            $em->flush();
+            $this->addFlash('success', "Discussion deleted successfully.");
+        }
+        else {
+            $this->addFlash('warning', "You are not allowed to delete this discussion.");
+        }
         return $this->redirectToRoute('discussion_index');
     }
 
@@ -184,19 +189,6 @@ class DiscussionController extends Controller
         return $userIsMember;
     }
 
-    private function addCreatorInMembersIfNotSelected(Discussion $discussion)
-    {
-        $user = $this->getUser();
-        //if user selected do not add in members
-        $members = $discussion->getMembers();
-        $isSelected = false;
-        foreach ($members as $member){
-            if($member->getId() == $user->getId()) {
-                $isSelected = true;break;
-            }
-        }
-        if(!$isSelected){$discussion->addMember($user);}
-    }
 
     private function currentUserIsCreator(Discussion $discussion){
         $isMine = false;

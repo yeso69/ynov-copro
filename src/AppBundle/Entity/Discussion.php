@@ -54,6 +54,8 @@ class Discussion
      */
     private $archived;
 
+    private $currentUser;
+
     /**
      * @return mixed
      */
@@ -100,6 +102,7 @@ class Discussion
     public function setMembers($members)
     {
         $this->members = $members;
+        $this->addCreatorInMembersIfNotSelected();
     }
 
 
@@ -222,5 +225,17 @@ class Discussion
         $this->archived = $archived;
     }
 
-
+    private function addCreatorInMembersIfNotSelected()
+    {
+        //if user selected do not add in members
+        $isSelected = false;
+        foreach ($this->members as $member){
+            if($member->getId() == $this->creator->getId()) {
+                $isSelected = true;break;
+            }
+        }
+        if(!$isSelected){
+            $this->addMember($this->creator);
+        }
+    }
 }

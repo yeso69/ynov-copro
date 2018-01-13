@@ -6,6 +6,12 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="header bg-light-blue">
+                    {% if allowedToEdit %}
+                    <a class="btn btn-success waves-effect pull-right" href="{{ url('discussion_edit', {id: discussion.id }) }}">
+                        <i class="material-icons">mode_edit</i>
+                        <span>Edit</span>
+                    </a>
+                    {% endif %}
                     <h2>{{ discussion.subject }}</h2>
                 </div>
                 <div class="body">
