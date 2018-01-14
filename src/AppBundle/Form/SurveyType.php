@@ -13,7 +13,7 @@ class SurveyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('question')->add('answers')->add('project');
+        $builder->add('question')->add('answers');
     }/**
      * {@inheritdoc}
      */

@@ -6,6 +6,7 @@
 
         {#MAIN CONTENT#}
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            {#PROJECT INFORMATION#}
             <div class="card">
                 <div class="header bg-light-blue">
                     {% if allowedToEdit %}
@@ -15,18 +16,18 @@
                         </a>
                     {% endif %}
                     <h2>Project informations</h2>
+                    {% for member in project.members %} <span class="badge">{{ member.username }}</span>{% endfor %}
                 </div>
                 <div class="body">
-                    {#PROJECT INFORMATION#}
                     <table class="table table-hover">
                         <thead>
                         <tr>
                             <td>Project name</td>
                             <td>Description</td>
                             <td>Status</td>
-                            <td>Members</td>
                             <td>Open date</td>
                             <td>Creator</td>
+                            <td>Document</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,25 +35,24 @@
                             <th>{{ project.name }}</th>
                             <th>{{ project.description }}</th>
                             <th>{{ project.status }}</th>
-                            {#<th>{{ project.members }}</th>#}
-                            <th>Members</th>
                             <th>{{ project.openDate|date('d/m/Y') }}</th>
                             <th>{{ project.creator }}</th>
+                            <th><a href="{{ asset('uploads/' ~ project.document) }}">View file (PDF)</a></th>
                         </tr>
                         </tbody>
                     </table>
-                    {# END OF PROJECT INFORMATION#}
                 </div>
             </div>
-        </div>
-        {#MAIN CONTENT#}
+            {# END OF PROJECT INFORMATION#}
+    </div>
+        {# END OF MAIN CONTENT #}
 
-
-            {# DISCUSSION #}
+        {# DISCUSSION #}
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right">
             <div class="card">
                 <div class="header bg-blue-grey">
                     <h2>Discussion</h2>
+                    {% for member in project.members %} <span class="badge">{{ member.username }}</span>{% endfor %}
                 </div>
                 <div class="body">
                     {% for message in project.discussion.messages %}
@@ -96,66 +96,8 @@
                         {{ form_end(form) }}
                     </div>
                 </div>
-                {#END OF DISCUSSION#}
             </div>
-    <!-- #END# Hover Rows -->
+            {#END OF DISCUSSION#}
+        </div>
 
 {% endblock body %}
-
-
-
-
-
-
-
-{#LEGACY#}
-{#{% block body %}#}
-    {#<h1>Project</h1>#}
-
-    {#<table>#}
-        {#<tbody>#}
-            {#<tr>#}
-                {#<th>Id</th>#}
-                {#<td>{{ project.id }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Name</th>#}
-                {#<td>{{ project.name }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Description</th>#}
-                {#<td>{{ project.description }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Status</th>#}
-                {#<td>{{ project.status }}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Opendate</th>#}
-                {#<td>{% if project.openDate %}{{ project.openDate|date('Y-m-d H:i:s') }}{% endif %}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Closedate</th>#}
-                {#<td>{% if project.closeDate %}{{ project.closeDate|date('Y-m-d H:i:s') }}{% endif %}</td>#}
-            {#</tr>#}
-            {#<tr>#}
-                {#<th>Creator</th>#}
-                {#<td>{{ project.creator }}</td>#}
-            {#</tr>#}
-        {#</tbody>#}
-    {#</table>#}
-
-    {#<ul>#}
-        {#<li>#}
-            {#<a href="{{ path('project_index') }}">Back to the list</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#<a href="{{ path('project_edit', { 'id': project.id }) }}">Edit</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#{{ form_start(delete_form) }}#}
-                {#<input type="submit" value="Delete">#}
-            {#{{ form_end(delete_form) }}#}
-        {#</li>#}
-    {#</ul>#}
-{#{% endblock %}#}

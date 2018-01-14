@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Project
@@ -88,6 +90,12 @@ class Project
      * @JoinColumn(name="discussion_id")
      */
     private $discussion;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\File(mimeTypes={ "application/pdf" })
+     */
+    private $document;
 
     public function __construct(Owner $user){
         $this->members = new ArrayCollection();
@@ -276,13 +284,13 @@ class Project
     /**
      * Set attachedFiles
      *
-     * @param string $attachedFiles
+     * @param string $document
      *
      * @return Project
      */
-    public function setAttachedFiles($attachedFiles)
+    public function setDocument($document)
     {
-        $this->attachedFiles = $attachedFiles;
+        $this->document = $document;
 
         return $this;
     }
@@ -292,9 +300,9 @@ class Project
      *
      * @return string
      */
-    public function getAttachedFiles()
+    public function getDocument()
     {
-        return $this->attachedFiles;
+        return $this->document;
     }
 
     /**
@@ -372,6 +380,20 @@ class Project
     public function addMember(\AppBundle\Entity\Owner $member)
     {
         $this->members[] = $member;
+
+        return $this;
+    }
+
+    /**
+     * Add document
+     *
+     * @param string $document
+     *
+     * @return Project
+     */
+    public function addDocument($file)
+    {
+        $this->document[] = $file;
 
         return $this;
     }

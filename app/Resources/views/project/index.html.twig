@@ -21,6 +21,7 @@
                             <th>Name</th>
                             <th>Description</th>
                             <th>Status</th>
+                            <th>Members</th>
                             <th>Created By</th>
                             <th>Open date</th>
                             <th>Actions</th>
@@ -32,15 +33,21 @@
                                 <td>{{ project.name }}</td>
                                 <td>{{ project.description }}</td>
                                 <td>{{ project.status }}</td>
+                                <td>{% for member in project.members %} <span class="badge">{{ member.username }}</span>{% endfor %}</td>
                                 <td>{{ project.creator.username }}</td>
                                 <th>{{ project.openDate|date('Y-m-d H:i:s') }}</th>
                                 <td>
                                     <a href="{{ url('project_show', {id: project.id }) }}">
                                         <i class="material-icons">visibility</i>
                                     </a>
+                                    {% if project.creator.id == app.user.id %}
+                                    <a href="{{ url('project_edit', {id: project.id }) }}">
+                                        <i class="material-icons">mode_edit</i>
+                                    </a>
                                     <a href="{{ url('project_delete', {id: project.id }) }}">
                                         <i class="material-icons">delete</i>
                                     </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

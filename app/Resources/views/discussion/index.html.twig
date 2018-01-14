@@ -20,6 +20,7 @@
                         <tr>
                             <th>Suject</th>
                             <th>Author</th>
+                            <th>Members</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -30,6 +31,7 @@
                                 <tr>
                                     <th>{{ discussion.subject }}</th>
                                     <th>{{ discussion.creator.username }}</th>
+                                    <th>{% for member in discussion .members %} <span class="badge">{{ member.username }}</span>{% endfor %}</th>
                                     {% if discussion.archived == true %}
                                         <td>Archived</td>
                                     {% else %}
@@ -39,12 +41,14 @@
                                         <a href="{{ url('discussion_show', {id: discussion.id }) }}">
                                             <i class="material-icons">visibility</i>
                                         </a>
+                                        {% if discussion.creator.id == app.user.id %}
                                         <a href="{{ url('discussion_edit', {id: discussion.id }) }}">
                                             <i class="material-icons">mode_edit</i>
                                         </a>
                                         <a href="{{ url('discussion_delete', {id: discussion.id }) }}">
                                             <i class="material-icons">delete</i>
                                         </a>
+                                        {% endif %}
                                     </td>
 
                                 </tr>

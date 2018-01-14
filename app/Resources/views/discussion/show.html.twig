@@ -13,6 +13,7 @@
                     </a>
                     {% endif %}
                     <h2>{{ discussion.subject }}</h2>
+                    {% for member in discussion.members %}<span class="badge">{{ member.username }}</span>{% endfor %}
                 </div>
                 <div class="body">
                     {% for message in discussion.messages %}

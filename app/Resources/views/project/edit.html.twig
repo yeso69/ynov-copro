@@ -1,21 +1,64 @@
 {% extends 'base.html.twig' %}
- {% set title = "Edit project" %}
+{% set title = "Edit project" %}
+
 {% block body %}
-    <h1>Project edit</h1>
+    <div class="card">
+        <div class="header bg-pink">
+            <h2>{{ title }}</h2>
+        </div>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+        <div class="body">
+            <div class="row clearfix">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.name) }}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                    </div>
+                </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('project_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.description) }}
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.status) }}
+                        {{ form_widget(form.status, {'attr': {'class': 'form-control', 'type': 'text'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.members) }}
+                        {{ form_widget(form.members, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-line">
+                        {{ form_label(form.document) }}
+                        {{ form_widget(form.document, { 'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" value="Submit" class="btn bg-cyan pull-right btn-lg waves-effect">
+                        <i class="material-icons">check</i>
+                        <span>SUBMIT</span>
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 {% endblock %}
+

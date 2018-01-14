@@ -6,6 +6,7 @@ use AppBundle\Entity\Project;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +26,11 @@ class ProjectType extends AbstractType
             ))
             ->add('status', ChoiceType::class, array(
                 'choices' => array('In discussion' => Project::STATUS_IN_DISCUSSION, 'Waiting for execution' => Project::STATUS_WAINTING_FOR_EXECUTION, 'Done' => Project::STATUS_DONE)
+            ))
+            ->add('document', FileType::class , array(
+                'label' => 'Document (PDF file)',
+                'required'=> false,
+                'data_class' => null
             ));
     }
     /**

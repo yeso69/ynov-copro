@@ -6,7 +6,9 @@ use AppBundle\Entity\Message;
 use AppBundle\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Project controller.
@@ -46,9 +48,12 @@ class ProjectController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $project->setMembers($project->getMembers());
+            $this->addDocument($project, $request);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($project);
             $em->flush();
+
 
             return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }
@@ -92,20 +97,34 @@ class ProjectController extends Controller
      */
     public function editAction(Request $request, Project $project)
     {
-        $deleteForm = $this->createDeleteForm($project);
+        $isMine = $this->currentUserIsCreator($project);
+        if($isMine == false){
+            $this->addFlash('warning', "You are not allowed to edit this project.");
+            return $this->redirectToRoute('project_index');
+        }
+
+        $doc = $project->getDocument();
         $editForm = $this->createForm('AppBundle\Form\ProjectType', $project);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $project->setMembers($project->getMembers());
+
+            if($project->getDocument() == null){
+                $project->setDocument($doc);
+            } else {
+                $this->addDocument($project, $request);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('project_edit', array('id' => $project->getId()));
+            $this->addFlash('success', "Project edited successfully.");
+            return $this->redirectToRoute('project_show', array('id' => $project->getId()));
         }
 
         return $this->render('project/edit.html.twig', array(
             'project' => $project,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form' => $editForm->createView(),
         ));
     }
 
@@ -169,5 +188,37 @@ class ProjectController extends Controller
             $this->addFlash('warning', "Acces denied for this project.");
         }
         return $userIsMember;
+    }
+
+    /**
+     * Add a file to project entity.
+     *
+     * @Route("/{id}/add_file", name="project_add_file")
+     * @Method("GET")
+     */
+    public function addFile(Request $request, Project $project){
+        $file = $request->get('file');
+        $project->addDocument($file);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($project);
+        $em->flush();
+        $this->addFlash('success', "Document added successfully.");
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
+    }
+
+    private function addDocument(Project $project, Request $request)
+    {
+        $file = $project->getDocument();
+        if ($fileName = $request->files->get('appbundle_project')['document']) {
+            $fileName = $request->files->get('appbundle_project')['document']->getClientOriginalName();
+
+            $file->move(
+                $this->getParameter('uploads_directory'),
+                $fileName
+            );
+
+            $project->setDocument($fileName);
+        }
     }
 }
